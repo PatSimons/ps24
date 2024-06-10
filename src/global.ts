@@ -567,15 +567,6 @@ window.Webflow.push(() => {
         vertical = false;
       }
 
-      // // Init Vertical Loop Function
-      // function initHorizontalLoop() {
-      //   tl_pLoop = horizontalLoop(projectContainers, {
-      //     repeat: -1,
-      //     speed: 0.25,
-      //     paused: false,
-      //     center: true,
-      //   });
-      // }
       // Init Vertical Loop Function:
       function initProjectLoop(vertical: boolean) {
         if (vertical) {
@@ -586,52 +577,41 @@ window.Webflow.push(() => {
             center: true,
             draggable: false,
           });
+          ScrollTrigger.observe({
+            target: 'body',
+            type: 'pointer,touch,wheel',
+            wheelSpeed: 1,
+            onChangeY: (self) => {
+              const easeType = 'expo.out';
+              const scaleYfactor = self.deltaY / 800 + 1;
+              if (isDesktop) {
+                gsap.to(loopWrapper, { ease: 'none', scaleY: scaleYfactor });
+              }
+              if (isTablet) {
+                gsap.to(loopWrapper, { ease: 'none', scaleX: scaleYfactor });
+              }
+              tl_pLoop.timeScale(self.deltaY);
+              const slowDown = gsap.to(tl_pLoop, {
+                timeScale: 1,
+                duration: 1,
+                delay: 0.5,
+                ease: easeType,
+              });
+              slowDown.invalidate().restart(); // now decelerate
+            },
+          });
         } else {
           tl_pLoop = horizontalLoop(projectContainers, {
             repeat: -1,
             speed: 0.25,
-            paused: false,
+            paused: true,
             center: true,
-            draggable: false,
+            draggable: true,
+            snap: true,
           });
         }
       }
-      // if (tl_pLoop){}
-      if (vertical) {
-        ScrollTrigger.observe({
-          target: 'body',
-          type: 'pointer,touch,wheel',
-          wheelSpeed: -1,
-          onChange: (self) => {
-            let deltaY: number;
-            if (isDesktop) {
-              deltaY = self.deltaY * -1;
-            } else {
-              deltaY = self.deltaY;
-            }
-            // ? up : down
-            const easeType = self.deltaY > 0 ? 'expo.out' : 'expo.out';
-            const transformOriginPos = self.deltaY > 0 ? 'bottom center' : 'top center';
-            const scaleYfactor = deltaY / 800 + 1;
-            gsap.set(loopWrapper, { transformOrigin: transformOriginPos });
-            if (isDesktop) {
-              gsap.to(loopWrapper, { ease: 'none', scaleY: scaleYfactor });
-            }
-            if (isTablet) {
-              gsap.to(loopWrapper, { ease: 'none', scaleX: scaleYfactor });
-            }
-            tl_pLoop.timeScale(deltaY);
-            const slowDown = gsap.to(tl_pLoop, {
-              timeScale: 1,
-              duration: 1,
-              delay: 0.5,
-              ease: easeType,
-            });
-            slowDown.invalidate().restart(); // now decelerate
-          },
-        });
-      } else {
-      }
+
       //_______________________________________________________________________________________________________ Page Init Function
       //   let timeline;
       //   items = gsap.utils.toArray(items);
