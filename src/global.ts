@@ -220,6 +220,7 @@ window.Webflow.push(() => {
           line.setAttribute('stroke', '#fb5751');
           line.setAttribute('stroke-width', '8');
           line.setAttribute('stroke-linecap', 'round');
+
           root.appendChild(line);
 
           const pos = gsap.getProperty(line);
@@ -260,13 +261,13 @@ window.Webflow.push(() => {
 
       function stopMouseFollower() {
         gsap.to(trailWrapper, { opacity: 0, delay: 0, duration: 0.25 });
-        while (root.firstChild) {
-          root.removeChild(root.firstChild);
-        }
-        window.removeEventListener('mousemove', updatePointer);
-        if (trailWrapper) {
-          trailWrapper.removeChild(root);
-        }
+        // while (root.firstChild) {
+        //   root.removeChild(root.firstChild);
+        // }
+        // window.removeEventListener('mousemove', updatePointer);
+        // if (trailWrapper) {
+        //   trailWrapper.removeChild(root);
+        // }
       }
 
       if (on) {
@@ -378,14 +379,18 @@ window.Webflow.push(() => {
           const teaserIcon = el.querySelector('[cs-el="teaserIcon"]');
           const teaserBgImg = el.querySelector('[cs-el="projectImg"]');
           const tl_teaserHover = gsap.timeline({ paused: true });
-          gsap.set(teaserTitle, { y: '-2px' });
-          tl_teaserHover.from(teaserIcon, { opacity: 0, xPercent: -15 });
-          tl_teaserHover.to(teaserBgImg, { scale: 1.05 }, '<');
+          tl_teaserHover.to(teaserBgImg, { scale: 1.025 }, '<');
           tl_teaserHover.from(
             teaserTitle,
-            { borderBottomRightRadius: '2rem', duration: 0.375, yPercent: -100 },
+            { duration: 0.25, yPercent: -100, ease: 'power1.in' },
             '<'
           );
+          tl_teaserHover.from(teaserIcon, {
+            opacity: 0,
+            xPercent: -15,
+            ease: 'back.out',
+            duration: 1,
+          });
           // tl_teaserHover.from(
           //   teaserTitle.children,
           //   { xPercent: 0, opacity: 0, duration: 0.3, ease: 'linear' },

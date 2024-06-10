@@ -10420,7 +10420,7 @@
             x: window.innerWidth / 2,
             y: window.innerHeight / 2
           };
-          window.addEventListener("mousemove", updatePointer2);
+          window.addEventListener("mousemove", updatePointer);
           let leader = (prop) => prop === "x" ? pointer.x : pointer.y;
           const total = 30;
           for (let i = 0; i < total; i++) {
@@ -10461,20 +10461,13 @@
             });
             return pos;
           }
-          function updatePointer2(event) {
+          function updatePointer(event) {
             pointer.x = event.clientX;
             pointer.y = event.clientY;
           }
         }
         function stopMouseFollower() {
           gsapWithCSS.to(trailWrapper, { opacity: 0, delay: 0, duration: 0.25 });
-          while (root.firstChild) {
-            root.removeChild(root.firstChild);
-          }
-          window.removeEventListener("mousemove", updatePointer);
-          if (trailWrapper) {
-            trailWrapper.removeChild(root);
-          }
         }
         if (on) {
           startMouseFollower();
@@ -10575,14 +10568,18 @@
             const teaserIcon = el.querySelector('[cs-el="teaserIcon"]');
             const teaserBgImg = el.querySelector('[cs-el="projectImg"]');
             const tl_teaserHover = gsapWithCSS.timeline({ paused: true });
-            gsapWithCSS.set(teaserTitle, { y: "-2px" });
-            tl_teaserHover.from(teaserIcon, { opacity: 0, xPercent: -15 });
-            tl_teaserHover.to(teaserBgImg, { scale: 1.05 }, "<");
+            tl_teaserHover.to(teaserBgImg, { scale: 1.025 }, "<");
             tl_teaserHover.from(
               teaserTitle,
-              { borderBottomRightRadius: "2rem", duration: 0.375, yPercent: -100 },
+              { duration: 0.25, yPercent: -100, ease: "power1.in" },
               "<"
             );
+            tl_teaserHover.from(teaserIcon, {
+              opacity: 0,
+              xPercent: -15,
+              ease: "back.out",
+              duration: 1
+            });
             el.addEventListener("mouseover", () => {
               tl_teaserHover.timeScale(1).play();
             });
