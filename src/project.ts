@@ -1,9 +1,5 @@
 import './global';
 
-//import { Draggable } from 'gsap/Draggable';
-//import { Observer } from 'gsap/Observer';
-//gsap.registerPlugin(Observer);
-// gsap.registerPlugin(ScrollTrigger);
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { exp_isDestop } from './global';
@@ -188,12 +184,12 @@ window.Webflow.push(() => {
   // }
 
   //_______________________________________________________________________________________________________ Scrolltrigger Pin Elements
-  const pinElement = document.querySelector('[cs-el="pin"]');
-  const pinParent = document.querySelector('[cs-el="pinParent"]');
-  const st = ScrollTrigger.create({
-    trigger: pinParent,
-    pin: pinElement,
-    start: 'top top',
-    end: 'bottom 2rem',
-  });
+  // const pinElement = document.querySelector('[cs-el="pin"]');
+  // const pinParent = document.querySelector('[cs-el="pinParent"]');
+  // const st = ScrollTrigger.create({
+  //   trigger: pinParent,
+  //   pin: pinElement,
+  //   start: 'top top',
+  //   end: 'bottom 2rem',
+  // });
 }); // End: Webflow Push
