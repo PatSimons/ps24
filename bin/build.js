@@ -13,7 +13,17 @@ const ENTRY_POINTS = [
   'src/projects.ts',
   'src/project.ts',
   'src/about.ts',
+  'src/contact.ts',
 ];
+
+/* 
+https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/home.js
+https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/project.js
+https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/projects.js
+https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/global.js
+https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/about.js
+https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/contact.js
+*/
 
 // Config dev serving
 const LIVE_RELOAD = !PRODUCTION;

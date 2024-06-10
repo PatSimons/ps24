@@ -584,6 +584,7 @@ window.Webflow.push(() => {
             speed: 0.25,
             paused: false,
             center: true,
+            draggable: false,
           });
         } else {
           tl_pLoop = horizontalLoop(projectContainers, {
@@ -591,7 +592,7 @@ window.Webflow.push(() => {
             speed: 0.25,
             paused: false,
             center: true,
-            draggable: true,
+            draggable: false,
           });
         }
       }
@@ -602,18 +603,16 @@ window.Webflow.push(() => {
           type: 'pointer,touch,wheel',
           wheelSpeed: -1,
           onChange: (self) => {
-            const invertedDeltaY = self.deltaY * -1;
-
-            //const { velocityY } = self;
-            //const invertedVelocityY = velocityY * -1;
-
+            let deltaY: number;
+            if (isDesktop) {
+              deltaY = self.deltaY * -1;
+            } else {
+              deltaY = self.deltaY;
+            }
             // ? up : down
             const easeType = self.deltaY > 0 ? 'expo.out' : 'expo.out';
             const transformOriginPos = self.deltaY > 0 ? 'bottom center' : 'top center';
-            //const scaleYfactor = self.deltaY > 0 ? 675 : 450;
-            const scaleYfactor = invertedDeltaY / 800 + 1;
-            //Math.abs(1 + invertedDeltaY / scaleYfactor)
-            //gsap.to(loopWrapper, { ease: easeType, scaleY: scaleYfactor });
+            const scaleYfactor = deltaY / 800 + 1;
             gsap.set(loopWrapper, { transformOrigin: transformOriginPos });
             if (isDesktop) {
               gsap.to(loopWrapper, { ease: 'none', scaleY: scaleYfactor });
@@ -621,7 +620,7 @@ window.Webflow.push(() => {
             if (isTablet) {
               gsap.to(loopWrapper, { ease: 'none', scaleX: scaleYfactor });
             }
-            tl_pLoop.timeScale(invertedDeltaY);
+            tl_pLoop.timeScale(deltaY);
             const slowDown = gsap.to(tl_pLoop, {
               timeScale: 1,
               duration: 1,
