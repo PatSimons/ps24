@@ -618,6 +618,10 @@ window.Webflow.push(() => {
       // > projectImgList
       // >> projectImgItem
 
+      // Tease on pageLoad
+      if (isTablet) {
+        gsap.from(projectImgList, { x: '15rem', ease: 'back.out', duration: 2 });
+      }
       // Init Vertical Loop Function:
       function initProjectLoop(vertical: boolean) {
         if (vertical) {
