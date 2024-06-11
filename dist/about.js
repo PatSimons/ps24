@@ -11009,7 +11009,7 @@
             ScrollTrigger2.observe({
               target: "body",
               type: "pointer,touch,wheel",
-              wheelSpeed: 1,
+              wheelSpeed: -1,
               onChangeY: (self) => {
                 const easeType = "expo.out";
                 const scaleYfactor = self.deltaY / 800 + 1;
