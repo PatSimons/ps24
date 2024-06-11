@@ -18,6 +18,7 @@ window.Webflow.push(() => {
   const projectNavLinksBlock = document.querySelector<HTMLElement>('[cs-el="projectNavLinks"]');
   const projectNavBlock = document.querySelector<HTMLElement>('[cs-el="projectNavBlock"]');
   const projectInfo = document.querySelector<HTMLElement>('[cs-el="projectInfo"]');
+  const loopWrapper = document.querySelector<HTMLElement>('[cs-el="loopWrapper"]');
   if (projectNavLinksBlock && projectInfo) {
     const projectNavLinks = projectNavLinksBlock.querySelectorAll<HTMLElement>(
       '[cs-el="projectNavLink"]'
@@ -64,7 +65,13 @@ window.Webflow.push(() => {
     // Open Project Nav timeline
     const tl_openProjectNav = gsap.timeline({ paused: true });
     tl_openProjectNav.to(projectNavLinksBlock, { autoAlpha: 1, duration: 0 });
-    tl_openProjectNav.to([projectInfo, projectNavBlock], {
+    let itemsToHide: HTMLElement[];
+    if (isDesktop) {
+      itemsToHide = [projectInfo, projectNavBlock];
+    } else {
+      itemsToHide = [projectInfo, projectNavBlock, loopWrapper];
+    }
+    tl_openProjectNav.to(itemsToHide, {
       autoAlpha: 0,
       ease: 'power.out',
       duration: 0.5,

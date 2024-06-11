@@ -57,48 +57,51 @@ window.Webflow.push(() => {
       const btn_navOpen = document.querySelector<HTMLElement>('[cs-el="navOpen"]');
       const btn_navClose = document.querySelector<HTMLElement>('[cs-el="navClose"]');
       const brandTagline = document.querySelector<HTMLElement>('[cs-el="brandTagline"]');
-      const tl_openNav = gsap.timeline({ paused: true });
+      const tl_openMainNav = gsap.timeline({ paused: true });
       const navIsOpen: boolean = false;
 
       gsap.set(navMenu, { autoAlpha: 0, bottom: '100%' });
-      tl_openNav.to(navMenu, { autoAlpha: 1, duration: 0 });
-      tl_openNav.to(navMenu, {
+      tl_openMainNav.to(navMenu, { autoAlpha: 1, duration: 0 });
+      tl_openMainNav.to(navMenu, {
         bottom: '0%',
         duration: 0.35,
         ease: pageTransition_easeType,
       });
-      tl_openNav.to(btn_navOpen, { autoAlpha: 0, duration: 0.25 }, '<');
-      tl_openNav.from(navItems, {
+      tl_openMainNav.to(btn_navOpen, { autoAlpha: 0, duration: 0.25 }, '<');
+      tl_openMainNav.from(navItems, {
         opacity: 0,
         y: '-2rem',
         stagger: 0.15,
         ease: 'back.out',
       });
-      //tl_openNav.to(brandTagline, { autoAlpha: 0.5 });
-      tl_openNav.to(btn_navClose, { autoAlpha: 1, duration: 0.25 }, '<');
+      //tl_openMainNav.to(brandTagline, { autoAlpha: 0.5 });
+      tl_openMainNav.to(btn_navClose, { autoAlpha: 1, duration: 0.25 }, '<');
       if (navMenu && btn_navOpen && btn_navClose) {
         btn_navOpen.addEventListener('click', () => {
           //startMouseFollower();
           bodyOverflowHidden();
-          tl_openNav.timeScale(1).play();
+          tl_openMainNav.timeScale(1).play();
         });
         btn_navClose.addEventListener('click', () => {
           //stopMouseFollower();
           bodyOverflowHidden();
-          tl_openNav.timeScale(2).reverse();
+          tl_openMainNav.timeScale(2).reverse();
         });
         // btn_navOpen.addEventListener('click', () => {
         //   if (navIsOpen === false) {
         //     navIsOpen = true;
-        //     tl_openNav.timeScale(1).play();
+        //     tl_openMainNav.timeScale(1).play();
         //   } else {
         //     navIsOpen = false;
-        //     tl_openNav.timeScale(1.5).reverse();
+        //     tl_openMainNav.timeScale(1.5).reverse();
         //   }
         // });
         const tl_closeNavPageTransition = gsap.timeline({ paused: true });
         tl_closeNavPageTransition.to(navItems, { autoAlpha: 0, stagger: 0.15 });
-        navItems.forEach((item) => {
+        const activeNavItems = document.querySelectorAll<HTMLElement>(
+          '[cs-el="navItem"] > a:not(.w--current)'
+        );
+        activeNavItems.forEach((item) => {
           item.addEventListener('click', () => {
             tl_closeNavPageTransition.timeScale(1).play();
           });
@@ -157,7 +160,7 @@ window.Webflow.push(() => {
       tl_pageTransition.timeScale(1).play();
 
       // Function to handle page transitions
-      function handlePageTransition(event: MouseEvent) {
+      function handlePageTransition(event: MouseEvent): void {
         // Prevent default link behavior
         event.preventDefault();
 
@@ -177,10 +180,11 @@ window.Webflow.push(() => {
       }
 
       // Add event listeners to all links
-      document.querySelectorAll('a').forEach((link) => {
+      document.querySelectorAll('a:not([exclude="true"])').forEach((link) => {
         // Check if the href attribute does not start with '#'
         if (!link.getAttribute('href')?.startsWith('#')) {
-          link.addEventListener('click', handlePageTransition);
+          //link.addEventListener('click', handlePageTransition);
+          link.addEventListener('click', handlePageTransition as EventListener);
           link.classList.add('delayed');
         }
       });
@@ -671,7 +675,6 @@ window.Webflow.push(() => {
             type: 'x',
             bounds: loopWrapper,
             inertia: true,
-            throwProps: true,
             snap: {
               x: gsap.utils.snap(snapValue),
             },
