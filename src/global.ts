@@ -607,7 +607,11 @@ window.Webflow.push(() => {
       let tl_pLoop: GSAPTimeline;
       let vertical: boolean = true;
       vertical = true;
+
       if (loopWrapper?.classList.contains('horizontal')) {
+        vertical = false;
+      }
+      if (isTablet) {
         vertical = false;
       }
       // loopWrapper
@@ -648,7 +652,7 @@ window.Webflow.push(() => {
             },
           });
         } else {
-          // so is Horizontal...
+          // so is Horizontal or Tablet and below...
           let itemWidth: number;
           if (isDesktop) {
             itemWidth = 45;
@@ -663,10 +667,11 @@ window.Webflow.push(() => {
             type: 'x',
             bounds: loopWrapper,
             inertia: true,
+            throwProps: true,
             snap: {
               x: gsap.utils.snap(snapValue),
             },
-            throwResistance: 100,
+            throwResistance: 10,
             // dragResistance: 0.25,
             maxDuration: 0.5,
           });
