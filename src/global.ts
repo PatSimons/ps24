@@ -3,13 +3,16 @@ export { gsap };
 
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 export { ScrollTrigger };
-gsap.registerPlugin(ScrollTrigger);
+import { Draggable } from 'gsap/Draggable';
+import { InertiaPlugin } from 'gsap/InertiaPlugin';
+
+gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
 
 import SplitType from 'split-type';
 import { initMarquees } from 'src/components/marquees';
 import { initSliders } from 'src/components/sliders';
 
-import { horizontalLoop } from './helpers/gsapHorizontalLoop';
+//import { horizontalLoop } from './helpers/gsapHorizontalLoop';
 import { verticalLoop } from './helpers/gsapVerticalLoop';
 import { waitForImages } from './helpers/psWaitForImages';
 
@@ -552,13 +555,8 @@ window.Webflow.push(() => {
 
       //_______________________________________________________________________________________________________ Loop Project Teasers/Images
       const loopWrapper = document.querySelector<HTMLElement>('[cs-el="loopWrapper"]');
-      const projectContainers = document.querySelectorAll<HTMLElement>(
-        '[cs-el="projectContainer"]'
-      );
-      const projectImages = document.querySelectorAll<HTMLImageElement>(
-        '[cs-el="projectContainer"] img'
-      );
-      //console.log(projectImages.length);
+      const projectImgList = document.querySelector<HTMLImageElement>('[cs-el="projectImgList"]');
+      const projectImgItems = document.querySelectorAll<HTMLElement>('[cs-el="projectImgItem"]');
 
       let tl_pLoop: GSAPTimeline;
       let vertical: boolean = true;
@@ -566,11 +564,14 @@ window.Webflow.push(() => {
       if (loopWrapper?.classList.contains('horizontal')) {
         vertical = false;
       }
+      // loopWrapper
+      // > projectImgList
+      // >> projectImgItem
 
       // Init Vertical Loop Function:
       function initProjectLoop(vertical: boolean) {
         if (vertical) {
-          tl_pLoop = verticalLoop(projectContainers, {
+          tl_pLoop = verticalLoop(projectImgItems, {
             repeat: -1,
             speed: 0.25,
             paused: false,
@@ -601,13 +602,18 @@ window.Webflow.push(() => {
             },
           });
         } else {
-          tl_pLoop = horizontalLoop(projectContainers, {
-            repeat: -1,
-            speed: 0.25,
-            paused: true,
-            center: true,
-            draggable: true,
-            snap: true,
+          const dragWidth = projectImgList?.offsetWidth;
+          const dragTotalItems = projectImgItems.length;
+          const dragSnap = dragWidth / dragTotalItems;
+          console.log(dragSnap);
+          console.log(projectImgList);
+          Draggable.create(projectImgList, {
+            type: 'x',
+            bounds: loopWrapper,
+            inertia: true,
+            snap: {
+              x: gsap.utils.snap(dragSnap),
+            },
           });
         }
       }
