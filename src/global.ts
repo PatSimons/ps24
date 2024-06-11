@@ -619,7 +619,7 @@ window.Webflow.push(() => {
       // >> projectImgItem
 
       // Tease on pageLoad
-      if (isTablet) {
+      if (!vertical) {
         gsap.from(projectImgList, { x: '15rem', ease: 'back.out', duration: 2 });
       }
       // Init Vertical Loop Function:
