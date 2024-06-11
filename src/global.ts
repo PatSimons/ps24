@@ -141,17 +141,16 @@ window.Webflow.push(() => {
       // brandWrap?.addEventListener('mouseleave', () => {
       //   psPlay.timeScale(3).reverse();
       // });
-      //_______________________________________________________________________________________________________ Page Transition
+      // //_______________________________________________________________________________________________________ Page Transition
       // Constant for delay time (in milliseconds)
       const delayTime = 500; // .5 second
       const pageTransitionFade = document.querySelector('[cs-el="pageTransitionFade"]');
       const tl_pageTransition = gsap.timeline({ paused: true });
+
       // Fade Out on page load
-      // gsap.set(pageTransitionFade, { top: '0%' });
       tl_pageTransition.to(pageTransitionFade, {
         autoAlpha: 1,
         duration: pageTransition_duration,
-        //bottom: '100%',
         top: '100%',
         ease: pageTransition_easeType,
       });
@@ -164,18 +163,15 @@ window.Webflow.push(() => {
 
         // Fade Out
         tl_pageTransition.timeScale(1.5).reverse();
-        // gsap.set(pageTransitionFade, { bottom: '100%' });
-        // gsap.to(pageTransitionFade, {
-        //   duration: 0.275,
-        //   bottom: '0%',
-        //   ease: 'power.in',
-        // });
 
         // Get the URL of the clicked link
         const url = (event.currentTarget as HTMLAnchorElement).href;
 
         // Add a delay before navigating to the new URL
         setTimeout(() => {
+          // Push a state to the history stack
+          history.pushState({}, '', url);
+          // Navigate to the new URL
           window.location.href = url;
         }, delayTime);
       }
@@ -188,6 +184,56 @@ window.Webflow.push(() => {
           link.classList.add('delayed');
         }
       });
+
+      // Handle the back button and forward button
+      window.addEventListener('popstate', () => {
+        // Fade In
+        tl_pageTransition.timeScale(1).play();
+
+        // Add a delay before navigating back
+        setTimeout(() => {
+          window.location.reload();
+        }, delayTime);
+      });
+
+      // // Constant for delay time (in milliseconds)
+      // const delayTime = 500; // .5 second
+      // const pageTransitionFade = document.querySelector('[cs-el="pageTransitionFade"]');
+      // const tl_pageTransition = gsap.timeline({ paused: true });
+      // // Fade Out on page load
+      // tl_pageTransition.to(pageTransitionFade, {
+      //   autoAlpha: 1,
+      //   duration: pageTransition_duration,
+      //   top: '100%',
+      //   ease: pageTransition_easeType,
+      // });
+      // tl_pageTransition.timeScale(1).play();
+
+      // // Function to handle page transitions
+      // function handlePageTransition(event: MouseEvent) {
+      //   // Prevent default link behavior
+      //   event.preventDefault();
+
+      //   // Fade Out
+      //   tl_pageTransition.timeScale(1.5).reverse();
+
+      //   // Get the URL of the clicked link
+      //   const url = (event.currentTarget as HTMLAnchorElement).href;
+
+      //   // Add a delay before navigating to the new URL
+      //   setTimeout(() => {
+      //     window.location.href = url;
+      //   }, delayTime);
+      // }
+
+      // // Add event listeners to all links
+      // document.querySelectorAll('a').forEach((link) => {
+      //   // Check if the href attribute does not start with '#'
+      //   if (!link.getAttribute('href')?.startsWith('#')) {
+      //     link.addEventListener('click', handlePageTransition);
+      //     link.classList.add('delayed');
+      //   }
+      // });
       //_______________________________________________________________________________________________________ Mouse Trail
 
       // const svgns = 'http://www.w3.org/2000/svg';
@@ -555,7 +601,7 @@ window.Webflow.push(() => {
 
       //_______________________________________________________________________________________________________ Loop Project Teasers/Images
       const loopWrapper = document.querySelector<HTMLElement>('[cs-el="loopWrapper"]');
-      const projectImgList = document.querySelector<HTMLImageElement>('[cs-el="projectImgList"]');
+      const projectImgList = document.querySelector<HTMLElement>('[cs-el="projectImgList"]');
       const projectImgItems = document.querySelectorAll<HTMLElement>('[cs-el="projectImgItem"]');
 
       let tl_pLoop: GSAPTimeline;
@@ -602,22 +648,38 @@ window.Webflow.push(() => {
             },
           });
         } else {
-          const dragWidth = projectImgList?.offsetWidth;
-          const dragTotalItems = projectImgItems.length;
-          const dragSnap = dragWidth / dragTotalItems;
-          console.log(dragSnap);
-          console.log(projectImgList);
+          // so is Horizontal...
+          let itemWidth: number;
+          if (isDesktop) {
+            itemWidth = 45;
+            // loopWrapper?.addEventListener('mouseover', () => {
+            //   gsap.to(loopWrapper, { x: '-1rem', yoyo: true, repeat: 1 });
+            // });
+          } else {
+            itemWidth = 85;
+          } // > 85svw
+          const snapValue = convertVwToPixels(itemWidth);
           Draggable.create(projectImgList, {
             type: 'x',
             bounds: loopWrapper,
             inertia: true,
             snap: {
-              x: gsap.utils.snap(dragSnap),
+              x: gsap.utils.snap(snapValue),
             },
+            throwResistance: 100,
+            // dragResistance: 0.25,
+            maxDuration: 0.5,
           });
         }
       }
 
+      function convertVwToPixels(vw: number): number {
+        // Calculate 1% of the window width in pixels
+        const onePercentOfWindowWidth = window.innerWidth / 100;
+        // Convert vw to pixels
+        const pixels = vw * onePercentOfWindowWidth;
+        return pixels;
+      }
       //_______________________________________________________________________________________________________ Page Init Function
       //   let timeline;
       //   items = gsap.utils.toArray(items);
@@ -857,11 +919,12 @@ window.Webflow.push(() => {
 
       //_______________________________________________________________________________________________________ Init imported Functions
       initSliders();
-      initMarquees();
+      //initMarquees();
 
       //_______________________________________________________________________________________________________ Add window EventListeners
       window.addEventListener('resize', () => {
-        pageInit();
+        // pageInit();
+        window.location.reload();
       });
       window.addEventListener('load', () => {
         pageInit();

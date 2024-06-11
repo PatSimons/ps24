@@ -10109,78 +10109,6 @@
   // src/components/marquees.ts
   gsapWithCSS.registerPlugin(ScrollTrigger2);
   gsapWithCSS.registerPlugin(Draggable);
-  function initMarquees() {
-    const marquees = gsapWithCSS.utils.toArray('[cs-el="marquee"]');
-    console.log("Marquees present: " + marquees.length);
-    if (marquees.length > 0) {
-      marquees.forEach((marquee) => {
-        if (marquee) {
-          initMarquee(marquee);
-        }
-      });
-    }
-  }
-  function initMarquee(marquee) {
-    const marqueeType = marquee?.getAttribute("cs-marquee-type");
-    const marqueeDirection = marquee?.getAttribute("cs-marquee-direction");
-    const marqueeDrag = marquee?.getAttribute("cs-marquee-nodrag");
-    const duration = 100;
-    const marqueeContent = marquee.querySelector('[cs-el="marquee-content"]');
-    if (!marqueeContent) {
-      console.log("No marquee content present!");
-      return;
-    }
-    if (!marqueeDrag && isMobile) {
-      Draggable.create(marqueeContent, {
-        type: "x",
-        bounds: marquee
-        //inertia: true,
-      });
-      return;
-    }
-    const marqueeContentClone = marqueeContent.cloneNode(true);
-    marquee.append(marqueeContentClone);
-    let tween;
-    const progress = tween ? tween.progress() : 0;
-    tween && tween.progress(0).kill();
-    const width = parseInt(getComputedStyle(marqueeContent).getPropertyValue("width"), 10);
-    const distanceToTranslate = -width / (marqueeType === "scroll" ? 8 : 1);
-    let startPoint = 0;
-    let endPoint = distanceToTranslate;
-    if (marqueeDirection === "right") {
-      startPoint = distanceToTranslate;
-      endPoint = 0;
-    }
-    if (marqueeType === "scroll") {
-      tween = gsapWithCSS.fromTo(
-        marquee.children,
-        { x: startPoint },
-        {
-          x: endPoint,
-          duration,
-          scrollTrigger: {
-            trigger: marqueeContent,
-            scrub: 1,
-            start: "top bottom",
-            end: "bottom top",
-            invalidateOnRefresh: true
-          }
-        }
-      );
-    }
-    if (marqueeType === "loop") {
-      tween = gsapWithCSS.fromTo(
-        marquee.children,
-        { x: startPoint },
-        {
-          x: endPoint,
-          duration,
-          repeat: -1
-        }
-      );
-    }
-    tween.progress(progress);
-  }
 
   // src/utils/globalvars.ts
   var gsapEaseType = "sine.out";
@@ -10813,7 +10741,6 @@
         tl_pageTransition.to(pageTransitionFade, {
           autoAlpha: 1,
           duration: pageTransition_duration,
-          //bottom: '100%',
           top: "100%",
           ease: pageTransition_easeType
         });
@@ -10823,6 +10750,7 @@
           tl_pageTransition.timeScale(1.5).reverse();
           const url = event.currentTarget.href;
           setTimeout(() => {
+            history.pushState({}, "", url);
             window.location.href = url;
           }, delayTime);
         }
@@ -10831,6 +10759,12 @@
             link.addEventListener("click", handlePageTransition);
             link.classList.add("delayed");
           }
+        });
+        window.addEventListener("popstate", () => {
+          tl_pageTransition.timeScale(1).play();
+          setTimeout(() => {
+            window.location.reload();
+          }, delayTime);
         });
         const consent = document.querySelector('[cs-el="consent"]');
         if (consent) {
@@ -11087,20 +11021,30 @@
               }
             });
           } else {
-            const dragWidth = projectImgList?.offsetWidth;
-            const dragTotalItems = projectImgItems.length;
-            const dragSnap = dragWidth / dragTotalItems;
-            console.log(dragSnap);
-            console.log(projectImgList);
+            let itemWidth;
+            if (isDesktop) {
+              itemWidth = 45;
+            } else {
+              itemWidth = 85;
+            }
+            const snapValue = convertVwToPixels(itemWidth);
             Draggable.create(projectImgList, {
               type: "x",
               bounds: loopWrapper,
               inertia: true,
               snap: {
-                x: gsapWithCSS.utils.snap(dragSnap)
-              }
+                x: gsapWithCSS.utils.snap(snapValue)
+              },
+              throwResistance: 100,
+              // dragResistance: 0.25,
+              maxDuration: 0.5
             });
           }
+        }
+        function convertVwToPixels(vw) {
+          const onePercentOfWindowWidth = window.innerWidth / 100;
+          const pixels = vw * onePercentOfWindowWidth;
+          return pixels;
         }
         let pageInitCalled = false;
         function pageInit() {
@@ -11126,9 +11070,8 @@
           pageInitCalled = true;
         }
         initSliders();
-        initMarquees();
         window.addEventListener("resize", () => {
-          pageInit();
+          window.location.reload();
         });
         window.addEventListener("load", () => {
           pageInit();
