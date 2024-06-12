@@ -29,15 +29,17 @@ window.Webflow.push(() => {
   //_______________________________________________________________________________________________________ GSAP Match Media
   const mm = gsap.matchMedia();
   const breakPoint = 992;
+  const breakPointMob = 768;
 
   mm.add(
     {
       isDesktop: `(min-width: ${breakPoint}px)`,
       isTablet: `(max-width: ${breakPoint - 1}px)`,
+      isMobile: `(max-width: ${breakPointMob - 1}px)`,
       reduceMotion: '(prefers-reduced-motion: reduce)',
     },
     (context) => {
-      const { isDesktop, isTablet, reduceMotion } = context.conditions;
+      const { isDesktop, isTablet, isMobile, reduceMotion } = context.conditions;
       if (isDesktop) {
         exp_isDestop = true;
       }
@@ -612,19 +614,19 @@ window.Webflow.push(() => {
       let vertical: boolean = true;
       vertical = true;
 
-      if (loopWrapper?.classList.contains('horizontal')) {
+      if (loopWrapper?.classList.contains('horizontal') || isTablet) {
         vertical = false;
       }
-      if (isTablet) {
-        vertical = false;
-      }
+      // if (isTablet) {
+      //   vertical = false;
+      // }
       // loopWrapper
       // > projectImgList
       // >> projectImgItem
 
       // Tease on pageLoad
       if (!vertical) {
-        gsap.from(projectImgList, { x: '15rem', ease: 'back.out', duration: 2 });
+        gsap.from(projectImgList, { x: '10rem', ease: 'back.out', duration: 1.5, delay: 0.25 });
       }
       // Init Vertical Loop Function:
       function initProjectLoop(vertical: boolean) {
@@ -661,15 +663,16 @@ window.Webflow.push(() => {
           });
         } else {
           // so is Horizontal or Tablet and below...
-          let itemWidth: number;
-          if (isDesktop) {
-            itemWidth = 45;
-            // loopWrapper?.addEventListener('mouseover', () => {
-            //   gsap.to(loopWrapper, { x: '-1rem', yoyo: true, repeat: 1 });
-            // });
-          } else {
-            itemWidth = 85;
-          } // > 85svw
+          // let itemWidth: number;
+          // if (isDesktop) {
+          //   itemWidth = 45;
+          // } else if (isTablet) {
+          //   itemWidth = 70;
+          // } else if (isMobile) {
+          //   itemWidth = 55;
+          // } // > svw
+          // const itemWidth = isDesktop ? 45 : isTablet ? 70 : isMobile ? 55 : defaultWidth;
+          const itemWidth = isDesktop ? 45 : isTablet ? 70 : 55;
           const snapValue = convertVwToPixels(itemWidth);
           Draggable.create(projectImgList, {
             type: 'x',
@@ -917,8 +920,8 @@ window.Webflow.push(() => {
           });
         }
         if (isTablet) {
+          vertical = false;
           waitForImages('[cs-el="projectImg"]').then((imagesLoaded) => {
-            vertical = false;
             if (imagesLoaded) {
               initProjectLoop(vertical);
             }
@@ -936,7 +939,6 @@ window.Webflow.push(() => {
       //_______________________________________________________________________________________________________ Add window EventListeners
       window.addEventListener('resize', () => {
         // pageInit();
-        window.location.reload();
       });
       window.addEventListener('load', () => {
         pageInit();

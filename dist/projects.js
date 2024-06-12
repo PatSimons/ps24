@@ -10677,14 +10677,16 @@
   window.Webflow.push(() => {
     const mm = gsapWithCSS.matchMedia();
     const breakPoint = 992;
+    const breakPointMob = 768;
     mm.add(
       {
         isDesktop: `(min-width: ${breakPoint}px)`,
         isTablet: `(max-width: ${breakPoint - 1}px)`,
+        isMobile: `(max-width: ${breakPointMob - 1}px)`,
         reduceMotion: "(prefers-reduced-motion: reduce)"
       },
       (context3) => {
-        const { isDesktop, isTablet, reduceMotion } = context3.conditions;
+        const { isDesktop, isTablet, isMobile: isMobile2, reduceMotion } = context3.conditions;
         if (isDesktop) {
           exp_isDestop = true;
         }
@@ -10988,14 +10990,11 @@
         let tl_pLoop;
         let vertical = true;
         vertical = true;
-        if (loopWrapper?.classList.contains("horizontal")) {
-          vertical = false;
-        }
-        if (isTablet) {
+        if (loopWrapper?.classList.contains("horizontal") || isTablet) {
           vertical = false;
         }
         if (!vertical) {
-          gsapWithCSS.from(projectImgList, { x: "15rem", ease: "back.out", duration: 2 });
+          gsapWithCSS.from(projectImgList, { x: "10rem", ease: "back.out", duration: 1.5, delay: 0.25 });
         }
         function initProjectLoop(vertical2) {
           if (vertical2) {
@@ -11030,12 +11029,7 @@
               }
             });
           } else {
-            let itemWidth;
-            if (isDesktop) {
-              itemWidth = 45;
-            } else {
-              itemWidth = 85;
-            }
+            const itemWidth = isDesktop ? 45 : isTablet ? 70 : 55;
             const snapValue = convertVwToPixels(itemWidth);
             Draggable.create(projectImgList, {
               type: "x",
@@ -11067,8 +11061,8 @@
             });
           }
           if (isTablet) {
+            vertical = false;
             waitForImages('[cs-el="projectImg"]').then((imagesLoaded) => {
-              vertical = false;
               if (imagesLoaded) {
                 initProjectLoop(vertical);
               }
@@ -11080,7 +11074,6 @@
         }
         initSliders();
         window.addEventListener("resize", () => {
-          window.location.reload();
         });
         window.addEventListener("load", () => {
           pageInit();
