@@ -28,6 +28,8 @@ window.Webflow.push(() => {
     );
 
     const btn_openProjectNav = document.querySelector<HTMLElement>('[cs-el="openProjectNav"]');
+    const btn_closeProjectNav = document.querySelector<HTMLElement>('[cs-el="closeProjectNav"]');
+
     const projectNavText = document.querySelector<HTMLElement>('[cs-el="projectNavText"]');
     const btn_projectNext = document.querySelector('[cs-el="projectNavNext"] > a');
     const btn_projectPrevious = document.querySelector('[cs-el="projectNavPrevious"] > a');
@@ -87,6 +89,8 @@ window.Webflow.push(() => {
       },
       '<.25'
     );
+    tl_openProjectNav.from(btn_closeProjectNav, { opacity: 0 });
+
     // Add the onComplete callback to tl_openNav to play tl_hoverNavLink
     tl_openProjectNav.eventCallback('onComplete', () => {
       // Setup hover for Nav links
@@ -106,6 +110,9 @@ window.Webflow.push(() => {
       tl_openProjectNav.timeScale(1).play();
     });
     projectNavLinksBlock?.addEventListener('mouseleave', () => {
+      tl_openProjectNav.timeScale(2).reverse();
+    });
+    btn_closeProjectNav?.addEventListener('click', () => {
       tl_openProjectNav.timeScale(2).reverse();
     });
 

@@ -413,6 +413,20 @@ window.Webflow.push(() => {
               });
             });
           });
+          // Form Submit logic to close modal after submit
+          const contactForm = document.getElementById('Contact-Form');
+
+          if (contactForm) {
+            contactForm.addEventListener('submit', function (event) {
+              event.preventDefault(); // Prevent the default form submission
+
+              // Simulate form submission processing
+              setTimeout(function () {
+                tl_openModal.timeScale(2).reverse();
+                bodyOverflowHidden();
+              }, 2000);
+            });
+          }
         }
         const closeModalBtns = gsap.utils.toArray<HTMLElement>('[cs-el="closeModal"]');
         if (closeModalBtns.length > 0) {
@@ -434,7 +448,7 @@ window.Webflow.push(() => {
           const teaserIcon = el.querySelector('[cs-el="teaserIcon"]');
           const teaserBgImg = el.querySelector('[cs-el="projectImg"]');
           const tl_teaserHover = gsap.timeline({ paused: true });
-          tl_teaserHover.to(teaserBgImg, { scale: 1.025 }, '<');
+          //tl_teaserHover.to(teaserBgImg, { scale: 1.025 }, '<');
           tl_teaserHover.from(
             teaserTitle,
             { duration: 0.25, yPercent: -100, ease: 'power1.in' },
@@ -626,7 +640,13 @@ window.Webflow.push(() => {
 
       // Tease on pageLoad
       if (!vertical) {
-        gsap.from(projectImgList, { x: '10rem', ease: 'back.out', duration: 1.5, delay: 0.25 });
+        gsap.from(projectImgItems, {
+          x: '5rem',
+          ease: 'power3.out',
+          delay: 0.2,
+          duration: 1,
+          stagger: 0.1,
+        });
       }
       // Init Vertical Loop Function:
       function initProjectLoop(vertical: boolean) {
@@ -676,6 +696,7 @@ window.Webflow.push(() => {
             type: 'x',
             bounds: loopWrapper,
             inertia: true,
+            edgeResistance: 0.5,
             snap: {
               x: gsap.utils.snap(snapValue),
             },
@@ -911,9 +932,15 @@ window.Webflow.push(() => {
       function pageInit() {
         if (pageInitCalled) return;
         if (isDesktop) {
+          if (vertical) {
+            gsap.set('[cs-el="projectImg"]', { opacity: 0, y: '4rem' });
+          }
           waitForImages('[cs-el="projectImg"]').then((imagesLoaded) => {
             if (imagesLoaded) {
               initProjectLoop(vertical);
+              if (vertical) {
+                gsap.to('[cs-el="projectImg"]', { delay: 0.2, opacity: 1, y: 0, stagger: 0.25 });
+              }
             }
           });
         }

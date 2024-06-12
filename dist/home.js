@@ -10847,6 +10847,16 @@
                 });
               });
             });
+            const contactForm = document.getElementById("Contact-Form");
+            if (contactForm) {
+              contactForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+                setTimeout(function() {
+                  tl_openModal.timeScale(2).reverse();
+                  bodyOverflowHidden();
+                }, 2e3);
+              });
+            }
           }
           const closeModalBtns = gsapWithCSS.utils.toArray('[cs-el="closeModal"]');
           if (closeModalBtns.length > 0) {
@@ -10867,7 +10877,6 @@
             const teaserIcon = el.querySelector('[cs-el="teaserIcon"]');
             const teaserBgImg = el.querySelector('[cs-el="projectImg"]');
             const tl_teaserHover = gsapWithCSS.timeline({ paused: true });
-            tl_teaserHover.to(teaserBgImg, { scale: 1.025 }, "<");
             tl_teaserHover.from(
               teaserTitle,
               { duration: 0.25, yPercent: -100, ease: "power1.in" },
@@ -10994,7 +11003,13 @@
           vertical = false;
         }
         if (!vertical) {
-          gsapWithCSS.from(projectImgList, { x: "10rem", ease: "back.out", duration: 1.5, delay: 0.25 });
+          gsapWithCSS.from(projectImgItems, {
+            x: "5rem",
+            ease: "power3.out",
+            delay: 0.2,
+            duration: 1,
+            stagger: 0.1
+          });
         }
         function initProjectLoop(vertical2) {
           if (vertical2) {
@@ -11033,6 +11048,7 @@
               type: "x",
               bounds: loopWrapper,
               inertia: true,
+              edgeResistance: 0.5,
               snap: {
                 x: gsapWithCSS.utils.snap(snapValue)
               },
@@ -11052,9 +11068,15 @@
           if (pageInitCalled)
             return;
           if (isDesktop) {
+            if (vertical) {
+              gsapWithCSS.set('[cs-el="projectImg"]', { opacity: 0, y: "4rem" });
+            }
             waitForImages('[cs-el="projectImg"]').then((imagesLoaded) => {
               if (imagesLoaded) {
                 initProjectLoop(vertical);
+                if (vertical) {
+                  gsapWithCSS.to('[cs-el="projectImg"]', { delay: 0.2, opacity: 1, y: 0, stagger: 0.25 });
+                }
               }
             });
           }
