@@ -11012,11 +11012,9 @@
               onChangeY: (self) => {
                 const easeType = "expo.out";
                 const scaleYfactor = self.deltaY / 800 + 1;
-                if (isDesktop) {
-                  gsapWithCSS.to(loopWrapper, { ease: "none", scaleY: scaleYfactor });
-                }
-                if (isTablet) {
-                  gsapWithCSS.to(loopWrapper, { ease: "none", scaleX: scaleYfactor });
+                const scaleProperties = isDesktop ? { scaleY: scaleYfactor } : { scaleX: scaleYfactor };
+                if (Object.keys(scaleProperties).length > 0) {
+                  gsapWithCSS.to(loopWrapper, { ease: "none", ...scaleProperties });
                 }
                 tl_pLoop.timeScale(self.deltaY);
                 const slowDown = gsapWithCSS.to(tl_pLoop, {

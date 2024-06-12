@@ -645,12 +645,20 @@ window.Webflow.push(() => {
             onChangeY: (self) => {
               const easeType = 'expo.out';
               const scaleYfactor = self.deltaY / 800 + 1;
-              if (isDesktop) {
-                gsap.to(loopWrapper, { ease: 'none', scaleY: scaleYfactor });
+              // if (isDesktop) {
+              //   gsap.to(loopWrapper, { ease: 'none', scaleY: scaleYfactor });
+              // }
+              // if (isTablet) {
+              //   gsap.to(loopWrapper, { ease: 'none', scaleX: scaleYfactor });
+              // }
+              const scaleProperties = isDesktop
+                ? { scaleY: scaleYfactor }
+                : { scaleX: scaleYfactor };
+
+              if (Object.keys(scaleProperties).length > 0) {
+                gsap.to(loopWrapper, { ease: 'none', ...scaleProperties });
               }
-              if (isTablet) {
-                gsap.to(loopWrapper, { ease: 'none', scaleX: scaleYfactor });
-              }
+
               tl_pLoop.timeScale(self.deltaY);
               const slowDown = gsap.to(tl_pLoop, {
                 timeScale: 1,
@@ -662,16 +670,6 @@ window.Webflow.push(() => {
             },
           });
         } else {
-          // so is Horizontal or Tablet and below...
-          // let itemWidth: number;
-          // if (isDesktop) {
-          //   itemWidth = 45;
-          // } else if (isTablet) {
-          //   itemWidth = 70;
-          // } else if (isMobile) {
-          //   itemWidth = 55;
-          // } // > svw
-          // const itemWidth = isDesktop ? 45 : isTablet ? 70 : isMobile ? 55 : defaultWidth;
           const itemWidth = isDesktop ? 45 : isTablet ? 70 : 55;
           const snapValue = convertVwToPixels(itemWidth);
           Draggable.create(projectImgList, {
