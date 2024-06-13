@@ -26,6 +26,34 @@ export let exp_isDestop: boolean = false;
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
+  //_______________________________________________________________________________________________________ Window Focus
+
+  // Function to handle when the user leaves the page
+  function handleUserLeaves() {
+    console.log('User has left the page.');
+    // Add your code here to handle when the user leaves
+  }
+
+  // Function to handle when the user returns to the page
+  function handleUserReturns() {
+    console.log('User has returned to the page.');
+    // Add your code here to handle when the user returns
+  }
+
+  // Function to check the visibility state of the page
+  function handleVisibilityChange() {
+    if (document.visibilityState === 'hidden') {
+      handleUserLeaves();
+    } else if (document.visibilityState === 'visible') {
+      handleUserReturns();
+    }
+  }
+
+  // Add event listener for visibility change
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  // Initial check to see the visibility state on page load
+  handleVisibilityChange();
   //_______________________________________________________________________________________________________ GSAP Match Media
   const mm = gsap.matchMedia();
   const breakPoint = 992;
@@ -374,30 +402,31 @@ window.Webflow.push(() => {
         if (openModalBtns.length > 0) {
           openModalBtns.forEach((item) => {
             item.addEventListener('click', () => {
-              const switchVar = item.getAttribute('switch');
-              let switchBtn: HTMLElement | null = null;
-              switch (switchVar) {
-                case 'freeBranding':
-                  // Do something if test is 'one'
-                  //console.log('freeBranding');
-                  switchBtn = modal.querySelector(
-                    '[form-switch="freeBranding"] > .w-checkbox-input'
-                  );
-                  setTimeout(() => {
-                    switchBtn?.classList.add('w--redirected-checked');
-                  }, 550); // 1000 milliseconds = 1 second
-                  break;
-                case 'fantail':
-                  switchBtn = modal.querySelector('[form-switch="fantail"] > .w-checkbox-input');
-                  setTimeout(() => {
-                    switchBtn?.classList.add('w--redirected-checked');
-                  }, 550); // 1000 milliseconds = 1 second
-                  break;
-                default:
-                  // Do something if test is neither 'one' nor 'two'
-                  console.log('Default case');
-                  break;
-              }
+              // const switchVar = item.getAttribute('switch');
+              // const switchBtn: HTMLInputElement | null = null;
+              // // switch (switchVar) {
+              //   case 'freeBranding':
+              //     // Do something if test is 'one'
+              //     //console.log('freeBranding');
+              //     switchBtn = modal.querySelector(
+              //       '[form-switch="freeBranding"]'
+              //     );
+              //     setTimeout(() => {
+              //       switchBtn.checked = !switchBtn.checked;
+              //       // switchBtn?.classList.add('w--redirected-checked');
+              //     }, 550); // 1000 milliseconds = 1 second
+              //     break;
+              //   case 'fantail':
+              //     switchBtn = modal.querySelector('[form-switch="fantail"] > .w-checkbox-input');
+              //     setTimeout(() => {
+              //       switchBtn?.classList.add('w--redirected-checked');
+              //     }, 550); // 1000 milliseconds = 1 second
+              //     break;
+              //   default:
+              //     // Do something if test is neither 'one' nor 'two'
+              //     console.log('Default case');
+              //     break;
+              // }
 
               tl_openModal.timeScale(1).play();
               bodyOverflowHidden();
@@ -414,7 +443,7 @@ window.Webflow.push(() => {
             });
           });
           // Form Submit logic to close modal after submit
-          const contactForm = document.getElementById('Contact-Form');
+          const contactForm = document.getElementById('Contact-Form') as HTMLFormElement;
 
           if (contactForm) {
             contactForm.addEventListener('submit', function (event) {
@@ -424,10 +453,41 @@ window.Webflow.push(() => {
               setTimeout(function () {
                 tl_openModal.timeScale(2).reverse();
                 bodyOverflowHidden();
+                resetForm(contactForm);
               }, 2000);
             });
+            // const testBtn = contactForm.querySelector('.textbtnforlolly');
+            // if (testBtn) {
+            //   testBtn?.addEventListener('click', () => {
+            //     resetForm(contactForm);
+            //   });
+            // }
+            function resetForm(form: HTMLFormElement) {
+              //console.log('Hoi Lol!');
+              form.reset(); // Reset the form fields
+
+              // If you have any custom inputs or states to reset, add them here
+              // Example:
+              // document.querySelector('#customInput').value = '';
+              contactForm
+                .querySelectorAll<HTMLElement>('.is-checked, .w--redirected-checked')
+                .forEach((element) => {
+                  //element.click();
+                  element.classList.remove('is-checked');
+                  element.classList.remove('w--redirected-checked');
+                });
+
+              // Optionally, you can hide the success message
+              const successMessage = form.querySelector('.w-form-done') as HTMLElement;
+              if (successMessage) {
+                successMessage.style.display = 'none';
+              }
+
+              form.style.display = 'block';
+            }
           }
         }
+
         const closeModalBtns = gsap.utils.toArray<HTMLElement>('[cs-el="closeModal"]');
         if (closeModalBtns.length > 0) {
           closeModalBtns.forEach((item) => {
