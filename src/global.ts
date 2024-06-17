@@ -31,13 +31,14 @@ window.Webflow.push(() => {
   // Function to handle when the user leaves the page
   function handleUserLeaves() {
     console.log('User has left the page.');
-    // Add your code here to handle when the user leaves
+    gsap.globalTimeline.pause();
   }
 
   // Function to handle when the user returns to the page
   function handleUserReturns() {
     console.log('User has returned to the page.');
-    // Add your code here to handle when the user returns
+    gsap.globalTimeline.resume();
+    //window.location.reload();
   }
 
   // Function to check the visibility state of the page
@@ -74,11 +75,13 @@ window.Webflow.push(() => {
       //_______________________________________________________________________________________________________ Body overflow-hidden toggle function
       function bodyOverflowHidden() {
         const body = document.querySelector<HTMLElement>('body');
-        if (!body?.classList.contains('overflow-hidden')) {
-          body?.classList.add('overflow-hidden');
-        } else {
-          body?.classList.remove('overflow-hidden');
-        }
+        setTimeout(() => {
+          if (!body?.classList.contains('overflow-hidden')) {
+            body?.classList.add('overflow-hidden');
+          } else {
+            body?.classList.remove('overflow-hidden');
+          }
+        }, 300);
       }
 
       //_______________________________________________________________________________________________________ Main Navigation functionalities
@@ -187,7 +190,7 @@ window.Webflow.push(() => {
         top: '100%',
         ease: pageTransition_easeType,
       });
-      tl_pageTransition.timeScale(1).play();
+      tl_pageTransition.timeScale(2).play();
 
       // Function to handle page transitions
       function handlePageTransition(event: MouseEvent): void {
@@ -195,7 +198,7 @@ window.Webflow.push(() => {
         event.preventDefault();
 
         // Fade Out
-        tl_pageTransition.timeScale(1.5).reverse();
+        tl_pageTransition.timeScale(1).reverse();
 
         // Get the URL of the clicked link
         const url = (event.currentTarget as HTMLAnchorElement).href;
@@ -721,7 +724,7 @@ window.Webflow.push(() => {
           ScrollTrigger.observe({
             target: 'body',
             type: 'pointer,touch,wheel',
-            wheelSpeed: -1,
+            wheelSpeed: 1,
             onChangeY: (self) => {
               const easeType = 'expo.out';
               const scaleYfactor = self.deltaY / 800 + 1;
@@ -774,6 +777,7 @@ window.Webflow.push(() => {
         const pixels = vw * onePercentOfWindowWidth;
         return pixels;
       }
+
       //_______________________________________________________________________________________________________ Page Init Function
       //   let timeline;
       //   items = gsap.utils.toArray(items);
@@ -991,28 +995,28 @@ window.Webflow.push(() => {
       let pageInitCalled = false;
       function pageInit() {
         if (pageInitCalled) return;
-        if (isDesktop) {
-          if (vertical) {
-            gsap.set('[cs-el="projectImg"]', { opacity: 0, y: '4rem' });
-          }
-          waitForImages('[cs-el="projectImg"]').then((imagesLoaded) => {
-            if (imagesLoaded) {
-              initProjectLoop(vertical);
-              if (vertical) {
-                gsap.to('[cs-el="projectImg"]', { delay: 0.2, opacity: 1, y: 0, stagger: 0.25 });
+        if (loopWrapper) {
+          if (isDesktop) {
+            if (vertical) {
+              gsap.set('[cs-el="projectImg"]', { opacity: 0, y: '4rem' });
+            }
+            waitForImages('[cs-el="projectImg"]').then((imagesLoaded) => {
+              if (imagesLoaded) {
+                initProjectLoop(vertical);
+                if (vertical) {
+                  gsap.to('[cs-el="projectImg"]', { delay: 0.2, opacity: 1, y: 0, stagger: 0.25 });
+                }
               }
-            }
-          });
-        }
-        if (isTablet) {
-          vertical = false;
-          waitForImages('[cs-el="projectImg"]').then((imagesLoaded) => {
-            if (imagesLoaded) {
-              initProjectLoop(vertical);
-            }
-          });
-        }
-        if (reduceMotion) {
+            });
+          }
+          if (isTablet) {
+            vertical = false;
+            waitForImages('[cs-el="projectImg"]').then((imagesLoaded) => {
+              if (imagesLoaded) {
+                initProjectLoop(vertical);
+              }
+            });
+          }
         }
         pageInitCalled = true;
       } // End: function pageInit()
