@@ -8,7 +8,7 @@ import { gsap } from './global';
 gsap.registerPlugin(ScrollTrigger);
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  const projectImgItems = document.querySelectorAll<HTMLElement>('[cs-el="projectImgItem"]');
+  const projectImgItems = document.querySelectorAll<HTMLElement>('[cs-el="projectsTeaserWrap"]');
   gsap.from(projectImgItems, {
     y: '5rem',
     ease: 'power3.out',
