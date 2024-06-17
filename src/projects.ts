@@ -19,8 +19,8 @@ window.Webflow.push(() => {
 
   //_______________________________________________________________________________________________________ CMS Filter
   const cmsFilter = document.querySelector<HTMLElement>('[cs-el="cmsFilter"]');
-  //gsap.set('.filters', { autoAlpha: 1 });
   if (cmsFilter) {
+    gsap.from(cmsFilter, { opacity: 0, delay: 3 });
     // const tl_fadeInItem = gsap.timeline({ paused: true });
     // const tl_fadeOutItem = gsap.timeline({ paused: true });
 
