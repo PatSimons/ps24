@@ -449,43 +449,34 @@ window.Webflow.push(() => {
           const contactForm = document.getElementById('Contact-Form') as HTMLFormElement;
 
           if (contactForm) {
+            const formSuccess = document.querySelector<HTMLElement>('[cs-el="formSuccess"]');
             contactForm.addEventListener('submit', function (event) {
-              event.preventDefault(); // Prevent the default form submission
-
+              //event.preventDefault(); // Prevent the default form submission
               // Simulate form submission processing
+              const tl_closeModalClone = tl_openModal;
+              tl_closeModalClone.eventCallback('onComplete', handleFormReset);
               setTimeout(function () {
-                tl_openModal.timeScale(2).reverse();
-                bodyOverflowHidden();
-                resetForm(contactForm);
+                tl_closeModalClone.timeScale(2).reverse();
               }, 2000);
+              function handleFormReset() {
+                resetForm(contactForm);
+              }
             });
-            // const testBtn = contactForm.querySelector('.textbtnforlolly');
-            // if (testBtn) {
-            //   testBtn?.addEventListener('click', () => {
-            //     resetForm(contactForm);
-            //   });
-            // }
             function resetForm(form: HTMLFormElement) {
-              //console.log('Hoi Lol!');
+              bodyOverflowHidden();
               form.reset(); // Reset the form fields
 
-              // If you have any custom inputs or states to reset, add them here
-              // Example:
-              // document.querySelector('#customInput').value = '';
-              contactForm
+              form
                 .querySelectorAll<HTMLElement>('.is-checked, .w--redirected-checked')
                 .forEach((element) => {
                   //element.click();
                   element.classList.remove('is-checked');
                   element.classList.remove('w--redirected-checked');
                 });
-
-              // Optionally, you can hide the success message
-              const successMessage = form.querySelector('.w-form-done') as HTMLElement;
-              if (successMessage) {
-                successMessage.style.display = 'none';
+              console.log(formSuccess);
+              if (formSuccess) {
+                formSuccess.style.display = 'none';
               }
-
               form.style.display = 'block';
             }
           }
