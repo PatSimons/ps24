@@ -712,34 +712,41 @@ window.Webflow.push(() => {
             center: true,
             draggable: false,
           });
+          const slowDown = gsap.to(tl_pLoop, {
+            timeScale: 1,
+            duration: 1,
+            delay: 0.5,
+            ease: 'expo.out',
+          });
           ScrollTrigger.observe({
             target: 'body',
             type: 'pointer,touch,wheel',
             wheelSpeed: 1,
             onChangeY: (self) => {
-              const easeType = 'expo.out';
-              const scaleYfactor = self.deltaY / 800 + 1;
+              tl_pLoop.timeScale(self.deltaY);
+              //const easeType = 'expo.out';
+              const scaleYfactor = self.deltaY / 750 + 1;
+              // console.log(self.deltaY);
+              // console.log((self.deltaY / 750 + 1).toFixed(2));
               // if (isDesktop) {
               //   gsap.to(loopWrapper, { ease: 'none', scaleY: scaleYfactor });
               // }
               // if (isTablet) {
               //   gsap.to(loopWrapper, { ease: 'none', scaleX: scaleYfactor });
               // }
-              const scaleProperties = isDesktop
-                ? { scaleY: scaleYfactor }
-                : { scaleX: scaleYfactor };
 
-              if (Object.keys(scaleProperties).length > 0) {
-                gsap.to(loopWrapper, { ease: 'none', ...scaleProperties });
-              }
+              // const scaleProperties = isDesktop
+              //   ? { scaleY: scaleYfactor }
+              //   : { scaleX: scaleYfactor };
 
-              tl_pLoop.timeScale(self.deltaY);
-              const slowDown = gsap.to(tl_pLoop, {
-                timeScale: 1,
-                duration: 1,
-                delay: 0.5,
-                ease: easeType,
+              //if (Object.keys(scaleProperties).length > 0) {
+              gsap.to(loopWrapper, {
+                ease: 'none',
+                // duration: 0.2,
+                // ...scaleProperties,
+                scaleY: scaleYfactor,
               });
+              //}
               slowDown.invalidate().restart(); // now decelerate
             },
           });
