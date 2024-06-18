@@ -10,11 +10,11 @@ window.Webflow ||= [];
 window.Webflow.push(() => {
   const projectImgItems = document.querySelectorAll<HTMLElement>('[cs-el="projectsTeaserWrap"]');
   gsap.from(projectImgItems, {
-    y: '5rem',
+    x: '5rem',
     ease: 'power3.out',
-    delay: 0.2,
+    delay: 0.1,
     duration: 1,
-    stagger: 0.1,
+    stagger: 0.05,
   });
 
   //_______________________________________________________________________________________________________ CMS Filter
@@ -57,8 +57,8 @@ window.Webflow.push(() => {
             // if (linkFilter === el.getAttribute('data-filter') || linkFilter === 'all-projects') {
             if (filtersArray.includes(linkFilter) || linkFilter === 'all-projects') {
               item.style.display = 'block';
-              gsap.set(item, { autoAlpha: 0, y: '5rem' });
-              gsap.to(item, { autoAlpha: 1, y: 0, ease: 'power3.out', duration: 1 });
+              gsap.set(item, { autoAlpha: 0, x: '5rem' });
+              gsap.to(item, { autoAlpha: 1, x: 0, ease: 'power3.out', duration: 1 });
             } else {
               //gsap.to(item, { autoAlpha: 0, duration: 0.2 });
               item.style.display = 'none';
