@@ -718,6 +718,12 @@ window.Webflow.push(() => {
             delay: 0.5,
             ease: 'expo.out',
           });
+          // const tl_scaleY = gsap.timeline({ paused: true });
+          // tl_scaleY.from(loopWrapper, {
+          //   ease: 'none',
+          //   scaleY: 1.3,
+          // });
+
           ScrollTrigger.observe({
             target: 'body',
             type: 'pointer,touch,wheel',
@@ -747,6 +753,8 @@ window.Webflow.push(() => {
                 scaleY: scaleYfactor,
               });
               //}
+            },
+            onStop: (self) => {
               slowDown.invalidate().restart(); // now decelerate
             },
           });
