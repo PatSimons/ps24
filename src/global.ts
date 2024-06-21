@@ -405,31 +405,31 @@ window.Webflow.push(() => {
         if (openModalBtns.length > 0) {
           openModalBtns.forEach((item) => {
             item.addEventListener('click', () => {
-              // const switchVar = item.getAttribute('switch');
-              // const switchBtn: HTMLInputElement | null = null;
-              // // switch (switchVar) {
-              //   case 'freeBranding':
-              //     // Do something if test is 'one'
-              //     //console.log('freeBranding');
-              //     switchBtn = modal.querySelector(
-              //       '[form-switch="freeBranding"]'
-              //     );
-              //     setTimeout(() => {
-              //       switchBtn.checked = !switchBtn.checked;
-              //       // switchBtn?.classList.add('w--redirected-checked');
-              //     }, 550); // 1000 milliseconds = 1 second
-              //     break;
-              //   case 'fantail':
-              //     switchBtn = modal.querySelector('[form-switch="fantail"] > .w-checkbox-input');
-              //     setTimeout(() => {
-              //       switchBtn?.classList.add('w--redirected-checked');
-              //     }, 550); // 1000 milliseconds = 1 second
-              //     break;
-              //   default:
-              //     // Do something if test is neither 'one' nor 'two'
-              //     console.log('Default case');
-              //     break;
-              // }
+              const switchVar = item.getAttribute('switch');
+              let switchBtn: HTMLInputElement | null = null;
+              switch (switchVar) {
+                case 'freeBranding':
+                  // Do something if test is 'one'
+                  console.log('freeBranding');
+                  switchBtn = modal.querySelector(
+                    '[form-switch="freeBranding"] > .w-checkbox-input'
+                  );
+                  setTimeout(() => {
+                    switchBtn?.click();
+                    //switchBtn?.classList.add('w--redirected-checked');
+                  }, 750); // 1000 milliseconds = 1 second
+                  break;
+                case 'fantail':
+                  switchBtn = modal.querySelector('[form-switch="fantail"] > .w-checkbox-input');
+                  setTimeout(() => {
+                    switchBtn?.classList.add('w--redirected-checked');
+                  }, 550); // 1000 milliseconds = 1 second
+                  break;
+                default:
+                  // Do something if test is neither 'one' nor 'two'
+                  console.log('Default case');
+                  break;
+              }
 
               tl_openModal.timeScale(1).play();
               bodyOverflowHidden();
@@ -446,40 +446,40 @@ window.Webflow.push(() => {
             });
           });
           // Form Submit logic to close modal after submit
-          const contactForm = document.getElementById('Contact-Form') as HTMLFormElement;
+          // const contactForm = document.getElementById('Contact-Form') as HTMLFormElement;
 
-          if (contactForm) {
-            const formSuccess = document.querySelector<HTMLElement>('[cs-el="formSuccess"]');
-            contactForm.addEventListener('submit', function (event) {
-              //event.preventDefault(); // Prevent the default form submission
-              // Simulate form submission processing
-              const tl_closeModalClone = tl_openModal;
-              tl_closeModalClone.eventCallback('onComplete', handleFormReset);
-              setTimeout(function () {
-                tl_closeModalClone.timeScale(2).reverse();
-              }, 2000);
-              function handleFormReset() {
-                resetForm(contactForm);
-              }
-            });
-            function resetForm(form: HTMLFormElement) {
-              bodyOverflowHidden();
-              form.reset(); // Reset the form fields
+          // if (contactForm) {
+          //   const formSuccess = document.querySelector<HTMLElement>('[cs-el="formSuccess"]');
+          //   contactForm.addEventListener('submit', function (event) {
+          //     //event.preventDefault(); // Prevent the default form submission
+          //     // Simulate form submission processing
+          //     const tl_closeModalClone = tl_openModal;
+          //     tl_closeModalClone.eventCallback('onComplete', handleFormReset);
+          //     setTimeout(function () {
+          //       tl_closeModalClone.timeScale(2).reverse();
+          //     }, 2000);
+          //     function handleFormReset() {
+          //       resetForm(contactForm);
+          //     }
+          //   });
+          //   function resetForm(form: HTMLFormElement) {
+          //     bodyOverflowHidden();
+          //     form.reset(); // Reset the form fields
 
-              form
-                .querySelectorAll<HTMLElement>('.is-checked, .w--redirected-checked')
-                .forEach((element) => {
-                  //element.click();
-                  element.classList.remove('is-checked');
-                  element.classList.remove('w--redirected-checked');
-                });
-              console.log(formSuccess);
-              if (formSuccess) {
-                formSuccess.style.display = 'none';
-              }
-              form.style.display = 'block';
-            }
-          }
+          //     form
+          //       .querySelectorAll<HTMLElement>('.is-checked, .w--redirected-checked')
+          //       .forEach((element) => {
+          //         //element.click();
+          //         element.classList.remove('is-checked');
+          //         element.classList.remove('w--redirected-checked');
+          //       });
+          //     console.log(formSuccess);
+          //     if (formSuccess) {
+          //       formSuccess.style.display = 'none';
+          //     }
+          //     form.style.display = 'block';
+          //   }
+          // }
         }
 
         const closeModalBtns = gsap.utils.toArray<HTMLElement>('[cs-el="closeModal"]');
