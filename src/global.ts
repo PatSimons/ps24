@@ -360,21 +360,21 @@ window.Webflow.push(() => {
       //   startMouseFollower();
       // }
       //_______________________________________________________________________________________________________ Cookie Consent
-      const consent = document.querySelector('[cs-el="consent"]');
-      if (consent) {
-        gsap.set(consent, { opacity: 0, yPercent: 200 });
-        gsap.to(consent, { opacity: 1, delay: 1, yPercent: 0 });
-        const closeConsent = consent.querySelector('[cs-el="closeConsent"]');
-        closeConsent?.addEventListener('click', () => {
-          gsap.to(consent, {
-            opacity: 0,
-            yPercent: 200,
-            onComplete: () => {
-              consent.remove();
-            },
-          });
-        });
-      }
+      // const consent = document.querySelector('[cs-el="consent"]');
+      // if (consent) {
+      //   gsap.set(consent, { opacity: 0, yPercent: 200 });
+      //   gsap.to(consent, { opacity: 1, delay: 1, yPercent: 0 });
+      //   const closeConsent = consent.querySelector('[cs-el="closeConsent"]');
+      //   closeConsent?.addEventListener('click', () => {
+      //     gsap.to(consent, {
+      //       opacity: 0,
+      //       yPercent: 200,
+      //       onComplete: () => {
+      //         consent.remove();
+      //       },
+      //     });
+      //   });
+      // }
 
       //_______________________________________________________________________________________________________ Modal
       const modal = document.querySelector('[cs-el="modal"]');
@@ -694,15 +694,17 @@ window.Webflow.push(() => {
 
       // Tease on pageLoad
       if (!vertical) {
+        // Horizontal Loop Items on Page load
         gsap.from(projectImgItems, {
+          opacity: 0,
           x: '5rem',
           ease: 'power3.out',
-          delay: 0.2,
+          delay: 0.35,
           duration: 1,
           stagger: 0.1,
         });
       }
-      // Init Vertical Loop Function:
+      // Init Loop Function:
       function initProjectLoop(vertical: boolean) {
         if (vertical) {
           tl_pLoop = verticalLoop(projectImgItems, {
@@ -759,7 +761,8 @@ window.Webflow.push(() => {
             },
           });
         } else {
-          const itemWidth = isDesktop ? 45 : isTablet ? 70 : 55;
+          // Horizontal Loop
+          const itemWidth = isDesktop ? 45 : isTablet ? 70 : 55; // Align with WF variables
           const snapValue = convertVwToPixels(itemWidth);
           Draggable.create(projectImgList, {
             type: 'x',
