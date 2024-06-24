@@ -501,6 +501,11 @@ window.Webflow.push(() => {
           const teaserTitle = el.querySelector('[cs-el="teaserTitle"]');
           const teaserIcon = el.querySelector('[cs-el="teaserIcon"]');
           const teaserBgImg = el.querySelector('[cs-el="projectImg"]');
+          if (!isDesktop) {
+            const teaserTitle = el.querySelector('[cs-el="teaserTitle"]');
+            gsap.set(teaserTitle, { opacity: 0 });
+            return;
+          }
           const tl_teaserHover = gsap.timeline({ paused: true });
           //tl_teaserHover.to(teaserBgImg, { scale: 1.025 }, '<');
           tl_teaserHover.from(
