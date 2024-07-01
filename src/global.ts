@@ -500,7 +500,7 @@ window.Webflow.push(() => {
         teasers.forEach((el) => {
           const teaserTitle = el.querySelector('[cs-el="teaserTitle"]');
           const teaserIcon = el.querySelector('[cs-el="teaserIcon"]');
-          const teaserBgImg = el.querySelector('[cs-el="projectImg"]');
+          //const teaserBgImg = el.querySelector('[cs-el="projectImg"]');
           if (!isDesktop) {
             const teaserTitle = el.querySelector('[cs-el="teaserTitle"]');
             gsap.set(teaserTitle, { opacity: 0 });
@@ -682,7 +682,9 @@ window.Webflow.push(() => {
       const loopWrapper = document.querySelector<HTMLElement>('[cs-el="loopWrapper"]');
       const projectImgList = document.querySelector<HTMLElement>('[cs-el="projectImgList"]');
       const projectImgItems = document.querySelectorAll<HTMLElement>('[cs-el="projectImgItem"]');
-
+      const visibleProjectImgItems = Array.from(projectImgItems).filter(
+        (img) => !img.closest('.w-condition-invisible')
+      );
       let tl_pLoop: GSAPTimeline;
       let vertical: boolean = true;
       vertical = true;
@@ -700,7 +702,7 @@ window.Webflow.push(() => {
       // Tease on pageLoad
       if (!vertical) {
         // Horizontal Loop Items on Page load
-        gsap.from(projectImgItems, {
+        gsap.from(visibleProjectImgItems, {
           opacity: 0,
           x: '5rem',
           ease: 'power3.out',
@@ -712,7 +714,7 @@ window.Webflow.push(() => {
       // Init Loop Function:
       function initProjectLoop(vertical: boolean) {
         if (vertical) {
-          tl_pLoop = verticalLoop(projectImgItems, {
+          tl_pLoop = verticalLoop(visibleProjectImgItems, {
             repeat: -1,
             speed: 0.25,
             paused: false,
@@ -759,6 +761,7 @@ window.Webflow.push(() => {
                 // ...scaleProperties,
                 scaleY: scaleYfactor,
               });
+              //console.log(loopWrapper);
               //}
             },
             onStop: (self) => {
@@ -1004,6 +1007,62 @@ window.Webflow.push(() => {
       //   });
       //   return timeline;
       // }
+      //_______________________________________________________________________________________________________ Page Loader
+      // Function to initialize the page loader
+      function initPageLoader() {
+        // Select the page loader and loader bar elements
+        const pageLoader = document.querySelector<HTMLElement>('[cs-el="pageLoader"]');
+        const pageLoaderBar = pageLoader?.querySelector<HTMLElement>('[cs-el="pageLoaderBar"]');
+        const pageLoaderNumber = pageLoader?.querySelector<HTMLElement>(
+          '[cs-el="pageLoaderNumber"]'
+        );
+        if (pageLoader && pageLoaderBar) {
+          let loaderDuration = 0.25;
+          let counter = { value: 0 };
+
+          // Check if it's not a first-time visit in this tab
+          if (sessionStorage.getItem('visited') !== null) {
+            loaderDuration = 0.25;
+            counter = {
+              value: 75,
+            };
+          }
+          sessionStorage.setItem('visited', 'true');
+
+          function updateLoaderText() {
+            const progress = Math.round(counter.value);
+            if (pageLoaderNumber) {
+              pageLoaderNumber.textContent = progress.toString();
+            }
+          }
+
+          function endLoaderAnimation() {
+            pageLoader?.remove();
+          }
+
+          const tl = gsap.timeline({
+            onComplete: endLoaderAnimation,
+          });
+
+          tl.to(counter, {
+            value: 100,
+            onUpdate: updateLoaderText,
+            duration: loaderDuration,
+            ease: 'none',
+          });
+
+          tl.to(
+            pageLoaderBar,
+            {
+              width: '100%',
+              duration: loaderDuration,
+              ease: 'none',
+            },
+            0
+          );
+        }
+      }
+      //initPageLoader();
 
       //_______________________________________________________________________________________________________ Page Init Function
       let pageInitCalled = false;

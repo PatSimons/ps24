@@ -9,10 +9,9 @@ window.Webflow ||= [];
 window.Webflow.push(() => {
   const isDesktop: boolean = exp_isDestop;
   //console.log('isDT >' + exp_isDestop);
-
   //_______________________________________________________________________________________________________ Add current class to nav link
-  const navLink = document.getElementById('nav_projects');
-  navLink?.classList.add('is-active');
+  // const navLink = document.getElementById('nav_projects');
+  // navLink?.classList.add('is-active');
 
   //_______________________________________________________________________________________________________ Collection List Navigation
   const projectNavLinksBlock = document.querySelector<HTMLElement>('[cs-el="projectNavLinks"]');
