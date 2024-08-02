@@ -140,6 +140,71 @@ window.Webflow.push(() => {
           });
         });
       }
+      // //_______________________________________________________________________________________________________ Fancy Hover Test
+      // const navHovers = document.querySelectorAll<HTMLElement>('[cs-el="navHoverItem"]');
+      // navHovers.forEach((item) => {
+      //   const navSplitType = new SplitType(item, { types: 'chars' });
+      //   const duplicate = item.cloneNode(true) as HTMLElement;
+      //   const staggerTime = 0.035;
+      //   const durationTime = 1.5;
+      //   const rotationDegree = 0;
+      //   const yPercentage = -115;
+      //   // Add the 'dupe' class to the cloned element
+      //   duplicate.classList.add('dupe');
+      //   //item.style.color = 'red';
+      //   // Insert the cloned element after the original
+      //   item.parentNode?.insertBefore(duplicate, item.nextSibling);
+      //   const charsOriginal = item.querySelectorAll('.char');
+      //   const charsDuplicate = duplicate.querySelectorAll('.char');
+      //   gsap.set(charsDuplicate, { yPercent: yPercentage * -1, rotateZ: rotationDegree * -1 });
+      //   const tl_mouseEnter = gsap.timeline({ paused: true });
+      //   const tl_mouseLeave = gsap.timeline({ paused: true });
+      //   tl_mouseEnter.to(charsOriginal, {
+      //     yPercent: yPercentage,
+      //     stagger: staggerTime,
+      //     duration: durationTime,
+      //     rotateZ: rotationDegree,
+      //     ease: 'expo.out',
+      //   });
+      //   tl_mouseEnter.to(
+      //     charsDuplicate,
+      //     {
+      //       yPercent: 0,
+      //       stagger: staggerTime,
+      //       duration: durationTime,
+      //       rotateZ: 0,
+      //       ease: 'expo.out',
+      //     },
+      //     '<'
+      //   );
+      //   tl_mouseLeave.to(charsOriginal, {
+      //     yPercent: 0,
+      //     stagger: staggerTime,
+      //     duration: durationTime,
+      //     rotateZ: 0,
+      //     ease: 'expo.out',
+      //   });
+      //   tl_mouseLeave.to(
+      //     charsDuplicate,
+      //     {
+      //       yPercent: yPercentage * -1,
+      //       stagger: staggerTime,
+      //       rotateZ: rotationDegree,
+      //       duration: durationTime,
+      //       ease: 'expo.out',
+      //     },
+      //     '<'
+      //   );
+      //   //tl_mouseEnter.play();
+      //   duplicate.addEventListener('mouseenter', () => {
+      //     tl_mouseEnter.timeScale(1).restart();
+      //     console.log('enter');
+      //   });
+      //   duplicate.addEventListener('mouseleave', () => {
+      //     tl_mouseLeave.timeScale(1).restart();
+      //     console.log('leave');
+      //   });
+      // });
       //_______________________________________________________________________________________________________ PS
       // const brandWrap = document.querySelector<HTMLElement>('[cs-el="brandWrap"]');
       // const psLetters = document.querySelectorAll<HTMLElement>('[cs-el="psLetter"]');
@@ -727,42 +792,19 @@ window.Webflow.push(() => {
             delay: 0.5,
             ease: 'expo.out',
           });
-          // const tl_scaleY = gsap.timeline({ paused: true });
-          // tl_scaleY.from(loopWrapper, {
-          //   ease: 'none',
-          //   scaleY: 1.3,
-          // });
-
           ScrollTrigger.observe({
             target: 'body',
             type: 'pointer,touch,wheel',
             wheelSpeed: 1,
             onChangeY: (self) => {
               tl_pLoop.timeScale(self.deltaY);
-              //const easeType = 'expo.out';
-              const scaleYfactor = self.deltaY / 750 + 1;
-              // console.log(self.deltaY);
-              // console.log((self.deltaY / 750 + 1).toFixed(2));
-              // if (isDesktop) {
-              //   gsap.to(loopWrapper, { ease: 'none', scaleY: scaleYfactor });
-              // }
-              // if (isTablet) {
-              //   gsap.to(loopWrapper, { ease: 'none', scaleX: scaleYfactor });
-              // }
-
-              // const scaleProperties = isDesktop
-              //   ? { scaleY: scaleYfactor }
-              //   : { scaleX: scaleYfactor };
-
-              //if (Object.keys(scaleProperties).length > 0) {
-              gsap.to(loopWrapper, {
-                ease: 'none',
-                // duration: 0.2,
-                // ...scaleProperties,
-                scaleY: scaleYfactor,
-              });
-              //console.log(loopWrapper);
-              //}
+              // const scaleYfactor = self.deltaY / 2000 + 1;
+              // gsap.to(loopWrapper, {
+              //   ease: 'none',
+              //   // duration: 0.2,
+              //   // ...scaleProperties,
+              //   scaleY: scaleYfactor,
+              // });
             },
             onStop: (self) => {
               slowDown.invalidate().restart(); // now decelerate
