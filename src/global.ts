@@ -747,9 +747,11 @@ window.Webflow.push(() => {
       const loopWrapper = document.querySelector<HTMLElement>('[cs-el="loopWrapper"]');
       const projectImgList = document.querySelector<HTMLElement>('[cs-el="projectImgList"]');
       const projectImgItems = document.querySelectorAll<HTMLElement>('[cs-el="projectImgItem"]');
+      const toolTip = document.querySelector<HTMLElement>('[cs-el="toolTip"]');
       const visibleProjectImgItems = Array.from(projectImgItems).filter(
         (img) => !img.closest('.w-condition-invisible')
       );
+
       let tl_pLoop: GSAPTimeline;
       let vertical: boolean = true;
       vertical = true;
@@ -798,6 +800,7 @@ window.Webflow.push(() => {
             wheelSpeed: 1,
             onChangeY: (self) => {
               tl_pLoop.timeScale(self.deltaY);
+              toolTip?.remove();
               // const scaleYfactor = self.deltaY / 2000 + 1;
               // gsap.to(loopWrapper, {
               //   ease: 'none',
@@ -822,6 +825,9 @@ window.Webflow.push(() => {
             snap: {
               x: gsap.utils.snap(snapValue),
             },
+            onDragStart: () => {
+              toolTip?.remove();
+            },
             throwResistance: 10,
             // dragResistance: 0.25,
             maxDuration: 0.5,
@@ -836,6 +842,51 @@ window.Webflow.push(() => {
         const pixels = vw * onePercentOfWindowWidth;
         return pixels;
       }
+      //_______________________________________________________________________________________________________ Tool tips
+      function isCursorOverElement(
+        cursorX: number,
+        cursorY: number,
+        element: HTMLElement
+      ): boolean {
+        const rect = element.getBoundingClientRect();
+        return (
+          cursorX >= rect.left &&
+          cursorX <= rect.right &&
+          cursorY >= rect.top &&
+          cursorY <= rect.bottom
+        );
+      }
+      function monitorCursorCollision(delay: number = 0.2) {
+        gsap.set(toolTip, {
+          xPercent: -50,
+          yPercent: -150,
+          position: 'fixed',
+          autoAlpha: 0,
+        });
+
+        document.addEventListener('mousemove', (event) => {
+          const mouseX = event.clientX;
+          const mouseY = event.clientY;
+
+          gsap.to(toolTip, {
+            autoAlpha: 1,
+            x: mouseX,
+            y: mouseY,
+            duration: 0.5,
+            ease: 'power2.out',
+          });
+
+          // Check if the cursor is over the loopWrapper
+          if (isCursorOverElement(mouseX, mouseY, loopWrapper)) {
+          } else {
+            gsap.killTweensOf(toolTip, 'autoAlpha');
+            gsap.to(toolTip, { autoAlpha: 0, duration: 0 });
+          }
+        });
+      }
+
+      // Call the function
+      monitorCursorCollision();
 
       //_______________________________________________________________________________________________________ Page Init Function
       //   let timeline;
@@ -1051,59 +1102,59 @@ window.Webflow.push(() => {
       // }
       //_______________________________________________________________________________________________________ Page Loader
       // Function to initialize the page loader
-      function initPageLoader() {
-        // Select the page loader and loader bar elements
-        const pageLoader = document.querySelector<HTMLElement>('[cs-el="pageLoader"]');
-        const pageLoaderBar = pageLoader?.querySelector<HTMLElement>('[cs-el="pageLoaderBar"]');
-        const pageLoaderNumber = pageLoader?.querySelector<HTMLElement>(
-          '[cs-el="pageLoaderNumber"]'
-        );
-        if (pageLoader && pageLoaderBar) {
-          let loaderDuration = 0.25;
-          let counter = { value: 0 };
+      // function initPageLoader() {
+      //   // Select the page loader and loader bar elements
+      //   const pageLoader = document.querySelector<HTMLElement>('[cs-el="pageLoader"]');
+      //   const pageLoaderBar = pageLoader?.querySelector<HTMLElement>('[cs-el="pageLoaderBar"]');
+      //   const pageLoaderNumber = pageLoader?.querySelector<HTMLElement>(
+      //     '[cs-el="pageLoaderNumber"]'
+      //   );
+      //   if (pageLoader && pageLoaderBar) {
+      //     let loaderDuration = 0.25;
+      //     let counter = { value: 0 };
 
-          // Check if it's not a first-time visit in this tab
-          if (sessionStorage.getItem('visited') !== null) {
-            loaderDuration = 0.25;
-            counter = {
-              value: 75,
-            };
-          }
-          sessionStorage.setItem('visited', 'true');
+      //     // Check if it's not a first-time visit in this tab
+      //     if (sessionStorage.getItem('visited') !== null) {
+      //       loaderDuration = 0.25;
+      //       counter = {
+      //         value: 75,
+      //       };
+      //     }
+      //     sessionStorage.setItem('visited', 'true');
 
-          function updateLoaderText() {
-            const progress = Math.round(counter.value);
-            if (pageLoaderNumber) {
-              pageLoaderNumber.textContent = progress.toString();
-            }
-          }
+      //     function updateLoaderText() {
+      //       const progress = Math.round(counter.value);
+      //       if (pageLoaderNumber) {
+      //         pageLoaderNumber.textContent = progress.toString();
+      //       }
+      //     }
 
-          function endLoaderAnimation() {
-            pageLoader?.remove();
-          }
+      //     function endLoaderAnimation() {
+      //       pageLoader?.remove();
+      //     }
 
-          const tl = gsap.timeline({
-            onComplete: endLoaderAnimation,
-          });
+      //     const tl = gsap.timeline({
+      //       onComplete: endLoaderAnimation,
+      //     });
 
-          tl.to(counter, {
-            value: 100,
-            onUpdate: updateLoaderText,
-            duration: loaderDuration,
-            ease: 'none',
-          });
+      //     tl.to(counter, {
+      //       value: 100,
+      //       onUpdate: updateLoaderText,
+      //       duration: loaderDuration,
+      //       ease: 'none',
+      //     });
 
-          tl.to(
-            pageLoaderBar,
-            {
-              width: '100%',
-              duration: loaderDuration,
-              ease: 'none',
-            },
-            0
-          );
-        }
-      }
+      //     tl.to(
+      //       pageLoaderBar,
+      //       {
+      //         width: '100%',
+      //         duration: loaderDuration,
+      //         ease: 'none',
+      //       },
+      //       0
+      //     );
+      //   }
+      // }
       //initPageLoader();
 
       //_______________________________________________________________________________________________________ Page Init Function
