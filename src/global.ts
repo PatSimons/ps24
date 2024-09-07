@@ -886,7 +886,7 @@ window.Webflow.push(() => {
       }
 
       // Call the function
-      monitorCursorCollision();
+      //monitorCursorCollision();
 
       //_______________________________________________________________________________________________________ Page Init Function
       //   let timeline;

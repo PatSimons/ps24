@@ -15,6 +15,7 @@ const ENTRY_POINTS = [
   'src/about.ts',
   'src/contact.ts',
   'src/playground.ts',
+  'src/freebranding.ts',
 ];
 
 /* 
@@ -25,6 +26,7 @@ https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/global.js
 https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/about.js
 https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/contact.js
 https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/playground.js
+https://cdn.jsdelivr.net/gh/PatSimons/ps24/dist/freebranding.js
 */
 
 // Config dev serving
