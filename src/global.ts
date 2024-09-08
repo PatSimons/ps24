@@ -843,50 +843,52 @@ window.Webflow.push(() => {
         return pixels;
       }
       //_______________________________________________________________________________________________________ Tool tips
-      function isCursorOverElement(
-        cursorX: number,
-        cursorY: number,
-        element: HTMLElement
-      ): boolean {
-        const rect = element.getBoundingClientRect();
-        return (
-          cursorX >= rect.left &&
-          cursorX <= rect.right &&
-          cursorY >= rect.top &&
-          cursorY <= rect.bottom
-        );
-      }
-      function monitorCursorCollision(delay: number = 0.2) {
-        gsap.set(toolTip, {
-          xPercent: -50,
-          yPercent: -150,
-          position: 'fixed',
-          autoAlpha: 0,
-        });
+      // function isCursorOverElement(
+      //   cursorX: number,
+      //   cursorY: number,
+      //   element: HTMLElement
+      // ): boolean {
+      //   const rect = element.getBoundingClientRect();
+      //   return (
+      //     cursorX >= rect.left &&
+      //     cursorX <= rect.right &&
+      //     cursorY >= rect.top &&
+      //     cursorY <= rect.bottom
+      //   );
+      // }
+      // function monitorCursorCollision(delay: number = 0.2) {
+      //   gsap.set(toolTip, {
+      //     xPercent: -50,
+      //     yPercent: -150,
+      //     position: 'fixed',
+      //     autoAlpha: 0,
+      //   });
 
-        document.addEventListener('mousemove', (event) => {
-          const mouseX = event.clientX;
-          const mouseY = event.clientY;
+      //   document.addEventListener('mousemove', (event) => {
+      //     const mouseX = event.clientX;
+      //     const mouseY = event.clientY;
 
-          gsap.to(toolTip, {
-            autoAlpha: 1,
-            x: mouseX,
-            y: mouseY,
-            duration: 0.5,
-            ease: 'power2.out',
-          });
+      //     gsap.to(toolTip, {
+      //       autoAlpha: 1,
+      //       x: mouseX,
+      //       y: mouseY,
+      //       duration: 0.5,
+      //       ease: 'power2.out',
+      //     });
 
-          // Check if the cursor is over the loopWrapper
-          if (isCursorOverElement(mouseX, mouseY, loopWrapper)) {
-          } else {
-            gsap.killTweensOf(toolTip, 'autoAlpha');
-            gsap.to(toolTip, { autoAlpha: 0, duration: 0 });
-          }
-        });
-      }
+      //     // Check if the cursor is over the loopWrapper
+      //     if (isCursorOverElement(mouseX, mouseY, loopWrapper)) {
+      //     } else {
+      //       gsap.killTweensOf(toolTip, 'autoAlpha');
+      //       gsap.to(toolTip, { autoAlpha: 0, duration: 0 });
+      //     }
+      //   });
+      // }
 
       // Call the function
-      //monitorCursorCollision();
+      // if (toolTip) {
+      //   monitorCursorCollision();
+      // }
 
       //_______________________________________________________________________________________________________ Page Init Function
       //   let timeline;
