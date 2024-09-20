@@ -9,7 +9,7 @@ import { InertiaPlugin } from 'gsap/InertiaPlugin';
 gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
 
 import SplitType from 'split-type';
-import { initMarquees } from 'src/components/marquees';
+//import { initMarquees } from 'src/components/marquees';
 import { initSliders } from 'src/components/sliders';
 
 //import { horizontalLoop } from './helpers/gsapHorizontalLoop';
@@ -22,6 +22,8 @@ const global_imgsFadeInDuration = 1;
 const pageTransition_easeType = 'power4.in';
 const pageTransition_duration = 0.5;
 
+const consoleLog: boolean = false;
+
 export let exp_isDestop: boolean = false;
 
 window.Webflow ||= [];
@@ -30,13 +32,17 @@ window.Webflow.push(() => {
 
   // Function to handle when the user leaves the page
   function handleUserLeaves() {
-    console.log('User has left the page.');
+    if (consoleLog) {
+      console.log('User has left the page.');
+    }
     gsap.globalTimeline.pause();
   }
 
   // Function to handle when the user returns to the page
   function handleUserReturns() {
-    console.log('User has returned to the page.');
+    if (consoleLog) {
+      console.log('User has returned to the page.');
+    }
     gsap.globalTimeline.resume();
     //window.location.reload();
   }
@@ -475,7 +481,9 @@ window.Webflow.push(() => {
               switch (switchVar) {
                 case 'freeBranding':
                   // Do something if test is 'one'
-                  console.log('freeBranding');
+                  if (consoleLog) {
+                    console.log('freeBranding');
+                  }
                   switchBtn = modal.querySelector(
                     '[form-switch="freeBranding"] > .w-checkbox-input'
                   );
@@ -492,7 +500,9 @@ window.Webflow.push(() => {
                   break;
                 default:
                   // Do something if test is neither 'one' nor 'two'
-                  console.log('Default case');
+                  if (consoleLog) {
+                    ('Default case');
+                  }
                   break;
               }
 

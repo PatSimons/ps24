@@ -386,7 +386,7 @@ function initSlider(slider: HTMLElement) {
 
   //// Function to set the active indicators.
   function setActiveindicator(index: number) {
-    console.log('setActiveindicator fnc triggered!');
+    //console.log('setActiveindicator fnc triggered!');
     allIndicators.forEach((indicator: HTMLElement, i) => {
       const indicatorInner = indicator.querySelector('[cs-el="slider-indicator-inner"]');
       if (i === index) {
@@ -446,7 +446,7 @@ function initSlider(slider: HTMLElement) {
 
   //// function setCover
   function setCover(cover: HTMLElement) {
-    console.log('Fnc setCover called');
+    //console.log('Fnc setCover called');
     // Make sure cover is visible
     gsap.to(cover, { autoAlpha: 1 });
 
@@ -463,7 +463,7 @@ function initSlider(slider: HTMLElement) {
 
   //// Set initial slide
   function startSlider(cover: HTMLElement) {
-    console.log('Fnc startSlider called');
+    //console.log('Fnc startSlider called');
 
     gsap.to(cover, { autoAlpha: 0 });
     slideAction(null, 0);

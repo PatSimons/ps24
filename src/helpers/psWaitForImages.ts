@@ -16,16 +16,16 @@ export function waitForImages(selector: string): Promise<boolean> {
   // Filter out images that have any parent with the class 'w-condition-invisible'
   const visibleImages = Array.from(images).filter((img) => !img.closest('.w-condition-invisible'));
 
-  console.log('Total images: ' + images.length);
-  console.log('Total visible images: ' + visibleImages.length);
+  //console.log('Total images: ' + images.length);
+  //console.log('Total visible images: ' + visibleImages.length);
 
   // console.log(selector);
-  console.log(images.length);
+  //console.log(images.length);
 
   return new Promise((resolve) => {
     if (visibleImages.length === 0) {
       resolve(true); // No images to load
-      console.log('No images to load');
+      //console.log('No images to load');
     }
     // // Define a type for the callback function
     // type Callback = () => void;
@@ -64,14 +64,14 @@ export function waitForImages(selector: string): Promise<boolean> {
       // if (!isInvisible) {
       if (img.complete && img.naturalWidth !== 0) {
         loadedImagesCount += 1;
-        console.log('load img > ' + loadedImagesCount);
+        //console.log('load img > ' + loadedImagesCount);
       } else {
         img.addEventListener('load', () => {
           loadedImagesCount += 1;
           if (loadedImagesCount === visibleImages.length) {
             resolve(imagesLoaded);
           }
-          console.log('load');
+          //console.log('load');
         });
 
         img.addEventListener('error', () => {
@@ -80,7 +80,7 @@ export function waitForImages(selector: string): Promise<boolean> {
           if (loadedImagesCount === visibleImages.length) {
             resolve(imagesLoaded);
           }
-          console.log('error');
+          //console.log('error');
         });
       }
       //}
@@ -88,7 +88,7 @@ export function waitForImages(selector: string): Promise<boolean> {
 
     if (loadedImagesCount === visibleImages.length) {
       resolve(imagesLoaded); // All images are loaded
-      console.log(loadedImagesCount + ' images were loaded');
+      //console.log(loadedImagesCount + ' images were loaded');
     }
   });
 }
