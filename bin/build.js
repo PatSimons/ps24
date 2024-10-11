@@ -16,6 +16,7 @@ const ENTRY_POINTS = [
   'src/contact.ts',
   'src/playground.ts',
   'src/freebranding.ts',
+  'src/post.ts',
 ];
 
 /* 
