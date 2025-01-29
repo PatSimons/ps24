@@ -195,6 +195,25 @@ window.Webflow.push(() => {
         }, delayTime);
       });
 
+      //_______________________________________________________________________________________________________ Format Text
+      function formatText(text: string): string {
+        // Add null/undefined check
+        if (!text) {
+          // console.warn('No text provided to formatText function');
+          return '';
+        }
+
+        return text
+          .replace(/\[(.*?)\]/g, '<span class="underline">$1</span>')
+          .replace(/\{(.*?)\}/g, '<span class="strikedout">$1</span>');
+      }
+
+      const allTexts = document.querySelectorAll('[cs-el="landingh1"]');
+
+      allTexts.forEach((text) => {
+        text.innerHTML = formatText(text.innerHTML);
+      });
+
       //_______________________________________________________________________________________________________ Modal
       const modal = document.querySelector('[cs-el="modal"]');
       if (modal) {
@@ -224,7 +243,6 @@ window.Webflow.push(() => {
         if (openModalBtns.length > 0) {
           openModalBtns.forEach((item) => {
             item.addEventListener('click', () => {
-              console.log('test');
               // const switchVar = item.getAttribute('switch');
 
               // let switchBtn: HTMLInputElement | null = null;
