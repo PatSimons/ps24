@@ -225,8 +225,8 @@ window.Webflow.push(() => {
           openModalBtns.forEach((item) => {
             item.addEventListener('click', () => {
               const switchVar = item.getAttribute('switch');
-              let switchBtn: HTMLInputElement | null = null;
               console.log('switchVar', switchVar);
+              let switchBtn: HTMLInputElement | null = null;
               switch (switchVar) {
                 case 'freeBranding':
                   // Do something if test is 'one'
