@@ -226,7 +226,7 @@ window.Webflow.push(() => {
             item.addEventListener('click', () => {
               const switchVar = item.getAttribute('switch');
               let switchBtn: HTMLInputElement | null = null;
-              console.log(switchVar);
+              console.log('switchVar', switchVar);
               switch (switchVar) {
                 case 'freeBranding':
                   // Do something if test is 'one'
@@ -245,12 +245,14 @@ window.Webflow.push(() => {
                   switchBtn = modal.querySelector('[form-switch="fantail"] > .w-checkbox-input');
                   setTimeout(() => {
                     switchBtn?.classList.add('w--redirected-checked');
+                    switchBtn?.click();
                   }, 550); // 1000 milliseconds = 1 second
                   break;
                 case 'discovery':
                   switchBtn = modal.querySelector('[form-switch="discovery"] > .w-checkbox-input');
                   setTimeout(() => {
                     switchBtn?.classList.add('w--redirected-checked');
+                    switchBtn?.click();
                   }, 550); // 1000 milliseconds = 1 second
                   break;
                 default:
