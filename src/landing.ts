@@ -1,4 +1,5 @@
 import './global';
+
 window.Webflow ||= [];
 window.Webflow.push(() => {
   function formatText(text: string): string {

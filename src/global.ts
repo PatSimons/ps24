@@ -4,9 +4,9 @@ export { gsap };
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 export { ScrollTrigger };
 import { Draggable } from 'gsap/Draggable';
-import { InertiaPlugin } from 'gsap/InertiaPlugin';
+// import { InertiaPlugin } from 'gsap/InertiaPlugin';
 
-gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin);
+gsap.registerPlugin(ScrollTrigger, Draggable);
 
 import SplitType from 'split-type';
 //import { initMarquees } from 'src/components/marquees';
@@ -64,17 +64,18 @@ window.Webflow.push(() => {
   //_______________________________________________________________________________________________________ GSAP Match Media
   const mm = gsap.matchMedia();
   const breakPoint = 992;
-  const breakPointMob = 768;
+  // const breakPointMob = 768;
 
   mm.add(
     {
       isDesktop: `(min-width: ${breakPoint}px)`,
       isTablet: `(max-width: ${breakPoint - 1}px)`,
-      isMobile: `(max-width: ${breakPointMob - 1}px)`,
-      reduceMotion: '(prefers-reduced-motion: reduce)',
     },
     (context) => {
-      const { isDesktop, isTablet, isMobile, reduceMotion } = context.conditions;
+      const { isDesktop, isTablet } = context.conditions as {
+        isDesktop: boolean;
+        isTablet: boolean;
+      };
       if (isDesktop) {
         exp_isDestop = true;
       }
@@ -95,9 +96,9 @@ window.Webflow.push(() => {
       const navItems = document.querySelectorAll<HTMLElement>('[cs-el="navItem"]');
       const btn_navOpen = document.querySelector<HTMLElement>('[cs-el="navOpen"]');
       const btn_navClose = document.querySelector<HTMLElement>('[cs-el="navClose"]');
-      const brandTagline = document.querySelector<HTMLElement>('[cs-el="brandTagline"]');
+      // const brandTagline = document.querySelector<HTMLElement>('[cs-el="brandTagline"]');
       const tl_openMainNav = gsap.timeline({ paused: true });
-      const navIsOpen: boolean = false;
+      // const navIsOpen: boolean = false;
 
       gsap.set(navMenu, { autoAlpha: 0, bottom: '100%' });
       tl_openMainNav.to(navMenu, { autoAlpha: 1, duration: 0 });
@@ -126,15 +127,6 @@ window.Webflow.push(() => {
           bodyOverflowHidden();
           tl_openMainNav.timeScale(2).reverse();
         });
-        // btn_navOpen.addEventListener('click', () => {
-        //   if (navIsOpen === false) {
-        //     navIsOpen = true;
-        //     tl_openMainNav.timeScale(1).play();
-        //   } else {
-        //     navIsOpen = false;
-        //     tl_openMainNav.timeScale(1.5).reverse();
-        //   }
-        // });
         const tl_closeNavPageTransition = gsap.timeline({ paused: true });
         tl_closeNavPageTransition.to(navItems, { autoAlpha: 0, stagger: 0.15 });
         const activeNavItems = document.querySelectorAll<HTMLElement>(
@@ -146,108 +138,7 @@ window.Webflow.push(() => {
           });
         });
       }
-      // //_______________________________________________________________________________________________________ Fancy Hover Test
-      // const navHovers = document.querySelectorAll<HTMLElement>('[cs-el="navHoverItem"]');
-      // navHovers.forEach((item) => {
-      //   const navSplitType = new SplitType(item, { types: 'chars' });
-      //   const duplicate = item.cloneNode(true) as HTMLElement;
-      //   const staggerTime = 0.035;
-      //   const durationTime = 1.5;
-      //   const rotationDegree = 0;
-      //   const yPercentage = -115;
-      //   // Add the 'dupe' class to the cloned element
-      //   duplicate.classList.add('dupe');
-      //   //item.style.color = 'red';
-      //   // Insert the cloned element after the original
-      //   item.parentNode?.insertBefore(duplicate, item.nextSibling);
-      //   const charsOriginal = item.querySelectorAll('.char');
-      //   const charsDuplicate = duplicate.querySelectorAll('.char');
-      //   gsap.set(charsDuplicate, { yPercent: yPercentage * -1, rotateZ: rotationDegree * -1 });
-      //   const tl_mouseEnter = gsap.timeline({ paused: true });
-      //   const tl_mouseLeave = gsap.timeline({ paused: true });
-      //   tl_mouseEnter.to(charsOriginal, {
-      //     yPercent: yPercentage,
-      //     stagger: staggerTime,
-      //     duration: durationTime,
-      //     rotateZ: rotationDegree,
-      //     ease: 'expo.out',
-      //   });
-      //   tl_mouseEnter.to(
-      //     charsDuplicate,
-      //     {
-      //       yPercent: 0,
-      //       stagger: staggerTime,
-      //       duration: durationTime,
-      //       rotateZ: 0,
-      //       ease: 'expo.out',
-      //     },
-      //     '<'
-      //   );
-      //   tl_mouseLeave.to(charsOriginal, {
-      //     yPercent: 0,
-      //     stagger: staggerTime,
-      //     duration: durationTime,
-      //     rotateZ: 0,
-      //     ease: 'expo.out',
-      //   });
-      //   tl_mouseLeave.to(
-      //     charsDuplicate,
-      //     {
-      //       yPercent: yPercentage * -1,
-      //       stagger: staggerTime,
-      //       rotateZ: rotationDegree,
-      //       duration: durationTime,
-      //       ease: 'expo.out',
-      //     },
-      //     '<'
-      //   );
-      //   //tl_mouseEnter.play();
-      //   duplicate.addEventListener('mouseenter', () => {
-      //     tl_mouseEnter.timeScale(1).restart();
-      //     console.log('enter');
-      //   });
-      //   duplicate.addEventListener('mouseleave', () => {
-      //     tl_mouseLeave.timeScale(1).restart();
-      //     console.log('leave');
-      //   });
-      // });
-      //_______________________________________________________________________________________________________ PS
-      // const brandWrap = document.querySelector<HTMLElement>('[cs-el="brandWrap"]');
-      // const psLetters = document.querySelectorAll<HTMLElement>('[cs-el="psLetter"]');
-      // const psPlay = gsap.timeline({ paused: true });
-      // gsap.set(psLetters, { width: 0, opacity: 0, x: '-100px' });
-      // gsap.set(brandWrap, { transformOrigin: 'left' });
-      // // psLetters.forEach((item, i) => {
-      // //   gsap.to(item, { x: 4 * (i * 50), width: 'auto', duration: 0.15, ease: 'back.out' });
-      // // });
-      // const psDuration = 0.1;
-      // const psStagger = 0.08;
-      // psPlay.to(psLetters, {
-      //   x: '0',
-      //   width: 'auto',
-      //   opacity: 1,
-      //   duration: psDuration,
-      //   stagger: psStagger,
-      //   ease: 'back.out',
-      // });
-      // psPlay.to(
-      //   brandWrap,
-      //   {
-      //     x: '0.75rem',
-      //     scaleX: 1.05,
-      //     yoyo: true,
-      //     repeat: 1,
-      //     duration: psDuration / 2 + 3 * psStagger,
-      //     ease: 'power.out',
-      //   },
-      //   '<'
-      // );
-      // brandWrap?.addEventListener('mouseenter', () => {
-      //   psPlay.timeScale(1).play();
-      // });
-      // brandWrap?.addEventListener('mouseleave', () => {
-      //   psPlay.timeScale(3).reverse();
-      // });
+
       // //_______________________________________________________________________________________________________ Page Transition
       // Constant for delay time (in milliseconds)
       const delayTime = 500; // .5 second
@@ -304,149 +195,6 @@ window.Webflow.push(() => {
         }, delayTime);
       });
 
-      // // Constant for delay time (in milliseconds)
-      // const delayTime = 500; // .5 second
-      // const pageTransitionFade = document.querySelector('[cs-el="pageTransitionFade"]');
-      // const tl_pageTransition = gsap.timeline({ paused: true });
-      // // Fade Out on page load
-      // tl_pageTransition.to(pageTransitionFade, {
-      //   autoAlpha: 1,
-      //   duration: pageTransition_duration,
-      //   top: '100%',
-      //   ease: pageTransition_easeType,
-      // });
-      // tl_pageTransition.timeScale(1).play();
-
-      // // Function to handle page transitions
-      // function handlePageTransition(event: MouseEvent) {
-      //   // Prevent default link behavior
-      //   event.preventDefault();
-
-      //   // Fade Out
-      //   tl_pageTransition.timeScale(1.5).reverse();
-
-      //   // Get the URL of the clicked link
-      //   const url = (event.currentTarget as HTMLAnchorElement).href;
-
-      //   // Add a delay before navigating to the new URL
-      //   setTimeout(() => {
-      //     window.location.href = url;
-      //   }, delayTime);
-      // }
-
-      // // Add event listeners to all links
-      // document.querySelectorAll('a').forEach((link) => {
-      //   // Check if the href attribute does not start with '#'
-      //   if (!link.getAttribute('href')?.startsWith('#')) {
-      //     link.addEventListener('click', handlePageTransition);
-      //     link.classList.add('delayed');
-      //   }
-      // });
-      //_______________________________________________________________________________________________________ Mouse Trail
-
-      // const svgns = 'http://www.w3.org/2000/svg';
-      // const root = document.createElementNS(svgns, 'svg');
-      // root.setAttribute('width', window.innerWidth.toString());
-      // root.setAttribute('height', window.innerHeight.toString());
-      // const trailWrapper = document.querySelector('.mousetrail-wrap');
-      // const on = false;
-
-      // function startMouseFollower() {
-      //   if (!trailWrapper) return;
-      //   trailWrapper.appendChild(root);
-
-      //   gsap.to(trailWrapper, { opacity: 1, delay: 0.75, duration: 1 });
-      //   const ease = 0.75;
-
-      //   const pointer = {
-      //     x: window.innerWidth / 2,
-      //     y: window.innerHeight / 2,
-      //   };
-
-      //   window.addEventListener('mousemove', updatePointer);
-
-      //   let leader = (prop) => (prop === 'x' ? pointer.x : pointer.y);
-
-      //   const total = 30;
-      //   for (let i = 0; i < total; i++) {
-      //     leader = createLine(leader);
-      //   }
-      //   const primaryColor = '#fb5751';
-      //   function createLine(leader) {
-      //     const line = document.createElementNS(svgns, 'line');
-      //     line.setAttribute('stroke', '#fb5751');
-      //     line.setAttribute('stroke-width', '8');
-      //     line.setAttribute('stroke-linecap', 'round');
-
-      //     root.appendChild(line);
-
-      //     const pos = gsap.getProperty(line);
-      //     gsap.set(trailWrapper, { opacity: 0 });
-      //     gsap.to(line, {
-      //       duration: 10000,
-      //       x: '+=150',
-      //       y: '+=10',
-      //       repeat: -1,
-      //       ease: 'expo.out',
-      //       opacity: 0,
-      //       modifiers: {
-      //         x: () => {
-      //           const posX = pos('x');
-      //           const leaderX = leader('x');
-      //           const x = posX + (leaderX - posX) * ease;
-      //           line.setAttribute('x2', leaderX - x);
-      //           return x;
-      //         },
-      //         y: () => {
-      //           const posY = pos('y');
-      //           const leaderY = leader('y');
-      //           const y = posY + (leaderY - posY) * ease;
-      //           line.setAttribute('y2', leaderY - y);
-      //           return y;
-      //         },
-      //       },
-      //     });
-
-      //     return pos;
-      //   }
-
-      //   function updatePointer(event) {
-      //     pointer.x = event.clientX;
-      //     pointer.y = event.clientY;
-      //   }
-      // }
-
-      // function stopMouseFollower() {
-      //   gsap.to(trailWrapper, { opacity: 0, delay: 0, duration: 0.25 });
-      //   // while (root.firstChild) {
-      //   //   root.removeChild(root.firstChild);
-      //   // }
-      //   // window.removeEventListener('mousemove', updatePointer);
-      //   // if (trailWrapper) {
-      //   //   trailWrapper.removeChild(root);
-      //   // }
-      // }
-
-      // if (on) {
-      //   startMouseFollower();
-      // }
-      //_______________________________________________________________________________________________________ Cookie Consent
-      // const consent = document.querySelector('[cs-el="consent"]');
-      // if (consent) {
-      //   gsap.set(consent, { opacity: 0, yPercent: 200 });
-      //   gsap.to(consent, { opacity: 1, delay: 1, yPercent: 0 });
-      //   const closeConsent = consent.querySelector('[cs-el="closeConsent"]');
-      //   closeConsent?.addEventListener('click', () => {
-      //     gsap.to(consent, {
-      //       opacity: 0,
-      //       yPercent: 200,
-      //       onComplete: () => {
-      //         consent.remove();
-      //       },
-      //     });
-      //   });
-      // }
-
       //_______________________________________________________________________________________________________ Modal
       const modal = document.querySelector('[cs-el="modal"]');
       if (modal) {
@@ -478,6 +226,7 @@ window.Webflow.push(() => {
             item.addEventListener('click', () => {
               const switchVar = item.getAttribute('switch');
               let switchBtn: HTMLInputElement | null = null;
+              console.log(switchVar);
               switch (switchVar) {
                 case 'freeBranding':
                   // Do something if test is 'one'
@@ -498,6 +247,12 @@ window.Webflow.push(() => {
                     switchBtn?.classList.add('w--redirected-checked');
                   }, 550); // 1000 milliseconds = 1 second
                   break;
+                case 'discovery':
+                  switchBtn = modal.querySelector('[form-switch="discovery"] > .w-checkbox-input');
+                  setTimeout(() => {
+                    switchBtn?.classList.add('w--redirected-checked');
+                  }, 550); // 1000 milliseconds = 1 second
+                  break;
                 default:
                   // Do something if test is neither 'one' nor 'two'
                   if (consoleLog) {
@@ -508,16 +263,18 @@ window.Webflow.push(() => {
 
               tl_openModal.timeScale(1).play();
               bodyOverflowHidden();
-              const words = modalHeading.querySelectorAll('.word');
-              gsap.from(words, {
-                opacity: 0,
-                delay: 0.5,
-                y: '2rem',
-                x: '.75rem',
-                duration: 0.5,
-                ease: 'back.out',
-                stagger: 0.1,
-              });
+              if (modalHeading) {
+                const words = modalHeading.querySelectorAll('.word');
+                gsap.from(words, {
+                  opacity: 0,
+                  delay: 0.5,
+                  y: '2rem',
+                  x: '.75rem',
+                  duration: 0.5,
+                  ease: 'back.out',
+                  stagger: 0.1,
+                });
+              }
             });
           });
           // Form Submit logic to close modal after submit
@@ -616,7 +373,7 @@ window.Webflow.push(() => {
           duration: 0,
         });
         splitTypes.forEach((el) => {
-          const splitType = new SplitType(el, { types: 'words, chars' });
+          const splitType = new SplitType(el, { types: 'words,chars' });
           gsap.from(splitType.words, {
             opacity: 0,
             y: '2rem',
@@ -819,7 +576,7 @@ window.Webflow.push(() => {
               //   scaleY: scaleYfactor,
               // });
             },
-            onStop: (self) => {
+            onStop: () => {
               slowDown.invalidate().restart(); // now decelerate
             },
           });
@@ -852,322 +609,6 @@ window.Webflow.push(() => {
         const pixels = vw * onePercentOfWindowWidth;
         return pixels;
       }
-      //_______________________________________________________________________________________________________ Tool tips
-      // function isCursorOverElement(
-      //   cursorX: number,
-      //   cursorY: number,
-      //   element: HTMLElement
-      // ): boolean {
-      //   const rect = element.getBoundingClientRect();
-      //   return (
-      //     cursorX >= rect.left &&
-      //     cursorX <= rect.right &&
-      //     cursorY >= rect.top &&
-      //     cursorY <= rect.bottom
-      //   );
-      // }
-      // function monitorCursorCollision(delay: number = 0.2) {
-      //   gsap.set(toolTip, {
-      //     xPercent: -50,
-      //     yPercent: -150,
-      //     position: 'fixed',
-      //     autoAlpha: 0,
-      //   });
-
-      //   document.addEventListener('mousemove', (event) => {
-      //     const mouseX = event.clientX;
-      //     const mouseY = event.clientY;
-
-      //     gsap.to(toolTip, {
-      //       autoAlpha: 1,
-      //       x: mouseX,
-      //       y: mouseY,
-      //       duration: 0.5,
-      //       ease: 'power2.out',
-      //     });
-
-      //     // Check if the cursor is over the loopWrapper
-      //     if (isCursorOverElement(mouseX, mouseY, loopWrapper)) {
-      //     } else {
-      //       gsap.killTweensOf(toolTip, 'autoAlpha');
-      //       gsap.to(toolTip, { autoAlpha: 0, duration: 0 });
-      //     }
-      //   });
-      // }
-
-      // Call the function
-      // if (toolTip) {
-      //   monitorCursorCollision();
-      // }
-
-      //_______________________________________________________________________________________________________ Page Init Function
-      //   let timeline;
-      //   items = gsap.utils.toArray(items);
-      //   config = config || {};
-      //   gsap.context(() => {
-      //     let { onChange } = config,
-      //       lastIndex = 0,
-      //       tl = gsap.timeline({
-      //         repeat: config.repeat,
-      //         onUpdate:
-      //           onChange &&
-      //           function () {
-      //             const i = tl.closestIndex();
-      //             if (lastIndex !== i) {
-      //               lastIndex = i;
-      //               onChange(items[i], i);
-      //             }
-      //           },
-      //         paused: config.paused,
-      //         defaults: { ease: 'none' },
-      //         onReverseComplete: () => tl.totalTime(tl.rawTime() + tl.duration() * 100),
-      //       }),
-      //       { length } = items,
-      //       startY = items[0].offsetTop,
-      //       times = [],
-      //       heights = [],
-      //       spaceBefore = [],
-      //       yPercents = [],
-      //       curIndex = 0,
-      //       { center } = config,
-      //       clone = (obj) => {
-      //         let result = {},
-      //           p;
-      //         for (p in obj) {
-      //           result[p] = obj[p];
-      //         }
-      //         return result;
-      //       },
-      //       pixelsPerSecond = (config.speed || 1) * 100,
-      //       snap = config.snap === false ? (v) => v : gsap.utils.snap(config.snap || 1), // some browsers shift by a pixel to accommodate flex layouts, so for example if width is 20% the first element's width might be 242px, and the next 243px, alternating back and forth. So we snap to 5 percentage points to make things look more natural
-      //       timeOffset = 0,
-      //       container =
-      //         center === true
-      //           ? items[0].parentNode
-      //           : gsap.utils.toArray(center)[0] || items[0].parentNode,
-      //       totalHeight,
-      //       getTotalHeight = () =>
-      //         items[length - 1].offsetTop +
-      //         (yPercents[length - 1] / 100) * heights[length - 1] -
-      //         startY +
-      //         spaceBefore[0] +
-      //         items[length - 1].offsetHeight * gsap.getProperty(items[length - 1], 'scaleY') +
-      //         (parseFloat(config.paddingBottom) || 0),
-      //       populateHeights = () => {
-      //         let b1 = container.getBoundingClientRect(),
-      //           b2;
-      //         startY = items[0].offsetTop;
-      //         items.forEach((el, i) => {
-      //           heights[i] = parseFloat(gsap.getProperty(el, 'height', 'px'));
-      //           yPercents[i] = snap(
-      //             (parseFloat(gsap.getProperty(el, 'y', 'px')) / heights[i]) * 100 +
-      //               gsap.getProperty(el, 'yPercent')
-      //           );
-      //           b2 = el.getBoundingClientRect();
-      //           spaceBefore[i] = b2.top - (i ? b1.bottom : b1.top);
-      //           b1 = b2;
-      //         });
-      //         gsap.set(items, {
-      //           // convert "x" to "xPercent" to make things responsive, and populate the widths/xPercents Arrays to make lookups faster.
-      //           yPercent: (i) => yPercents[i],
-      //         });
-      //         totalHeight = getTotalHeight();
-      //       },
-      //       timeWrap,
-      //       populateOffsets = () => {
-      //         timeOffset = center ? (tl.duration() * (container.offsetWidth / 2)) / totalHeight : 0;
-      //         center &&
-      //           times.forEach((t, i) => {
-      //             times[i] = timeWrap(
-      //               tl.labels['label' + i] +
-      //                 (tl.duration() * heights[i]) / 2 / totalHeight -
-      //                 timeOffset
-      //             );
-      //           });
-      //       },
-      //       getClosest = (values, value, wrap) => {
-      //         let i = values.length,
-      //           closest = 1e10,
-      //           index = 0,
-      //           d;
-      //         while (i--) {
-      //           d = Math.abs(values[i] - value);
-      //           if (d > wrap / 2) {
-      //             d = wrap - d;
-      //           }
-      //           if (d < closest) {
-      //             closest = d;
-      //             index = i;
-      //           }
-      //         }
-      //         return index;
-      //       },
-      //       populateTimeline = () => {
-      //         let i, item, curY, distanceToStart, distanceToLoop;
-      //         tl.clear();
-      //         for (i = 0; i < length; i++) {
-      //           item = items[i];
-      //           curY = (yPercents[i] / 100) * heights[i];
-      //           distanceToStart = item.offsetTop + curY - startY + spaceBefore[0];
-      //           distanceToLoop = distanceToStart + heights[i] * gsap.getProperty(item, 'scaleY');
-      //           tl.to(
-      //             item,
-      //             {
-      //               yPercent: snap(((curY - distanceToLoop) / heights[i]) * 100),
-      //               duration: distanceToLoop / pixelsPerSecond,
-      //             },
-      //             0
-      //           )
-      //             .fromTo(
-      //               item,
-      //               { yPercent: snap(((curY - distanceToLoop + totalHeight) / heights[i]) * 100) },
-      //               {
-      //                 yPercent: yPercents[i],
-      //                 duration: (curY - distanceToLoop + totalHeight - curY) / pixelsPerSecond,
-      //                 immediateRender: false,
-      //               },
-      //               distanceToLoop / pixelsPerSecond
-      //             )
-      //             .add('label' + i, distanceToStart / pixelsPerSecond);
-      //           times[i] = distanceToStart / pixelsPerSecond;
-      //         }
-      //         timeWrap = gsap.utils.wrap(0, tl.duration());
-      //       },
-      //       customAnimations = () => {
-      //         let { enterAnimation, leaveAnimation } = config,
-      //           eachDuration = tl.duration() / items.length;
-      //         items.forEach((item, i) => {
-      //           let anim = enterAnimation && enterAnimation(item, eachDuration, i),
-      //             isAtEnd =
-      //               anim &&
-      //               tl.duration() - timeWrap(times[i] - Math.min(eachDuration, anim.duration())) <
-      //                 eachDuration - 0.05;
-      //           anim && tl.add(anim, isAtEnd ? 0 : timeWrap(times[i] - anim.duration()));
-      //           anim = leaveAnimation && leaveAnimation(item, eachDuration, i);
-      //           isAtEnd = times[i] === tl.duration();
-      //           anim && anim.duration() > eachDuration && anim.duration(eachDuration);
-      //           anim && tl.add(anim, isAtEnd ? 0 : times[i]);
-      //         });
-      //       },
-      //       refresh = (deep) => {
-      //         const progress = tl.progress();
-      //         tl.progress(0, true);
-      //         populateHeights();
-      //         deep && populateTimeline();
-      //         populateOffsets();
-      //         customAnimations();
-      //         //deep && tl.draggable ? tl.time(times[curIndex], true) : tl.progress(progress, true);
-      //       },
-      //       onResize = () => refresh(true),
-      //       proxy;
-      //     gsap.set(items, { y: 0 });
-      //     populateHeights();
-      //     populateTimeline();
-      //     populateOffsets();
-      //     customAnimations();
-      //     window.addEventListener('resize', onResize);
-      //     function toIndex(index, vars) {
-      //       vars = clone(vars);
-      //       Math.abs(index - curIndex) > length / 2 &&
-      //         (index += index > curIndex ? -length : length); // always go in the shortest direction
-      //       let newIndex = gsap.utils.wrap(0, length, index),
-      //         time = times[newIndex];
-      //       if (time > tl.time() !== index > curIndex) {
-      //         // if we're wrapping the timeline's playhead, make the proper adjustments
-      //         time += tl.duration() * (index > curIndex ? 1 : -1);
-      //       }
-      //       if (vars.revolutions) {
-      //         time += tl.duration() * Math.round(vars.revolutions);
-      //         delete vars.revolutions;
-      //       }
-      //       if (time < 0 || time > tl.duration()) {
-      //         vars.modifiers = { time: timeWrap };
-      //       }
-      //       curIndex = newIndex;
-      //       vars.overwrite = true;
-      //       gsap.killTweensOf(proxy);
-      //       return tl.tweenTo(time, vars);
-      //     }
-      //     tl.elements = items;
-      //     tl.next = (vars) => toIndex(curIndex + 1, vars);
-      //     tl.previous = (vars) => toIndex(curIndex - 1, vars);
-      //     tl.current = () => curIndex;
-      //     tl.toIndex = (index, vars) => toIndex(index, vars);
-      //     tl.closestIndex = (setCurrent) => {
-      //       const index = getClosest(times, tl.time(), tl.duration());
-      //       setCurrent && (curIndex = index);
-      //       return index;
-      //     };
-      //     tl.times = times;
-      //     tl.progress(1, true).progress(0, true); // pre-render for performance
-      //     if (config.reversed) {
-      //       tl.vars.onReverseComplete();
-      //       tl.reverse();
-      //     }
-
-      //     tl.closestIndex(true);
-      //     onChange && onChange(items[curIndex], curIndex);
-      //     timeline = tl;
-      //     return () => window.removeEventListener('resize', onResize); // cleanup
-      //   });
-      //   return timeline;
-      // }
-      //_______________________________________________________________________________________________________ Page Loader
-      // Function to initialize the page loader
-      // function initPageLoader() {
-      //   // Select the page loader and loader bar elements
-      //   const pageLoader = document.querySelector<HTMLElement>('[cs-el="pageLoader"]');
-      //   const pageLoaderBar = pageLoader?.querySelector<HTMLElement>('[cs-el="pageLoaderBar"]');
-      //   const pageLoaderNumber = pageLoader?.querySelector<HTMLElement>(
-      //     '[cs-el="pageLoaderNumber"]'
-      //   );
-      //   if (pageLoader && pageLoaderBar) {
-      //     let loaderDuration = 0.25;
-      //     let counter = { value: 0 };
-
-      //     // Check if it's not a first-time visit in this tab
-      //     if (sessionStorage.getItem('visited') !== null) {
-      //       loaderDuration = 0.25;
-      //       counter = {
-      //         value: 75,
-      //       };
-      //     }
-      //     sessionStorage.setItem('visited', 'true');
-
-      //     function updateLoaderText() {
-      //       const progress = Math.round(counter.value);
-      //       if (pageLoaderNumber) {
-      //         pageLoaderNumber.textContent = progress.toString();
-      //       }
-      //     }
-
-      //     function endLoaderAnimation() {
-      //       pageLoader?.remove();
-      //     }
-
-      //     const tl = gsap.timeline({
-      //       onComplete: endLoaderAnimation,
-      //     });
-
-      //     tl.to(counter, {
-      //       value: 100,
-      //       onUpdate: updateLoaderText,
-      //       duration: loaderDuration,
-      //       ease: 'none',
-      //     });
-
-      //     tl.to(
-      //       pageLoaderBar,
-      //       {
-      //         width: '100%',
-      //         duration: loaderDuration,
-      //         ease: 'none',
-      //       },
-      //       0
-      //     );
-      //   }
-      // }
-      //initPageLoader();
 
       //_______________________________________________________________________________________________________ Page Init Function
       let pageInitCalled = false;
@@ -1212,7 +653,6 @@ window.Webflow.push(() => {
       });
       pageInit();
       //_______________________________________________________________________________________________________ MM end bit
-      return () => {}; // Return MM ??
-    } // End: MM Context
-  ); // End: MM
-}); // End: Webflow Push
+    }
+  ); // End matchMedia context function
+}); // End Webflow.push
